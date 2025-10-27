@@ -9,7 +9,7 @@ public class ComboInput : MonoBehaviour
     RB_ComboGhosting comboGhosting;
 
     public bool makingCombo = false;
-    List<int> currentCombatInputs = new List<int>();
+    List<CombatInput> currentCombatInputs = new List<CombatInput>();
 
     void Awake()
     {
@@ -61,11 +61,26 @@ public class ComboInput : MonoBehaviour
 
         makingCombo = true;
 
-        currentCombatInputs.Add(combatIndex);
+        currentCombatInputs.Add(new CombatInput(new int[] { combatIndex }, 0f));
+
 
         bool isValidCombo, finishedCombo;
         comboGhosting.ShowComboGhosting(currentCombatInputs, out isValidCombo, out finishedCombo);
 
-        
+        if (finishedCombo)
+        {
+            makingCombo = false;
+            currentCombatInputs.Clear();
+
+            FindFirstObjectByType<ObjectWithHealthGO>().ApplyDamange(40);
+        }
+
+        if (!isValidCombo)
+        {
+            makingCombo = false;
+            currentCombatInputs.Clear();
+        }
+
+        //Debug.Log("Valid Combo: " + isValidCombo + ", Finished Combo: " + finishedCombo);
     }
 }

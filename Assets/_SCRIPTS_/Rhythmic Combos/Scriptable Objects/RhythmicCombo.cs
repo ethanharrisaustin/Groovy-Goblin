@@ -7,7 +7,7 @@ public class RhythmicCombos : ScriptableObject
 {
     public Combo[] combos;
 
-    public List<Combo> GetPotentialCombos(List<int> combatInputs)
+    public List<Combo> GetPotentialCombos(List<CombatInput> combatInputs)
     {
         List<Combo> returnValue = new List<Combo>();
 
@@ -22,17 +22,19 @@ public class RhythmicCombos : ScriptableObject
     }
     
 
-    public Combo GetCompletedCombo(List<int> combatInputs)
+    public Combo GetCompletedCombo(List<CombatInput> combatInputs)
     {
         if (CompletedCombo(combatInputs, out Combo completedCombo)) return completedCombo;
 
         return null;
     }
-    public bool CompletedCombo(List<int> combatInputs, out Combo completedCombo)
+    public bool CompletedCombo(List<CombatInput> combatInputs, out Combo completedCombo)
     {
         for (int i = 0; i < combos.Length; ++i)
         {
             if (!PotentialCombo(combatInputs, combos[i])) continue;
+
+            if (combatInputs.Count != combos[i].comboPieces.Length) continue;
 
             completedCombo = combos[i];
             return true;
@@ -43,7 +45,7 @@ public class RhythmicCombos : ScriptableObject
     }
 
 
-    bool PotentialCombo(List<int> combatInputs, Combo cCombo)
+    bool PotentialCombo(List<CombatInput> combatInputs, Combo cCombo)
     {
         if (cCombo == null || cCombo.comboPieces == null) return false;
         if (cCombo.comboPieces.Length < combatInputs.Count) return false;
@@ -73,11 +75,22 @@ public class ComboPiece
 
     public ComboButton comboNumber;
 
-    public bool Matches(int combatIndex)
-    {
-        return ((int)comboNumber - 1) == combatIndex;
-    }
+    /*
+        public bool Matches(int combatIndex)
+        {
+            return ((int)comboNumber - 1) == combatIndex;
+        }
+        */
 
+    public bool Matches(ComboPiece comboPiece)
+    {
+        return ((int)comboNumber ) == ((int)comboPiece.comboNumber);
+    }
+    
+    public bool Matches(CombatInput combatInput)
+    {
+        return ((int)comboNumber - 1) == combatInput.comboButtonIndexes[0];
+    }
 }
 
 public enum ComboButton

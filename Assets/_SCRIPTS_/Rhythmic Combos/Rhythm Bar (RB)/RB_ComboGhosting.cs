@@ -11,7 +11,7 @@ public class RB_ComboGhosting : MonoBehaviour
         rhythmicCombos = RhythmicCombos.Get();
     }
 
-    public void ShowComboGhosting(List<int> currentCombatInputs, out bool isValidCombo, out bool finishedCombo)
+    public void ShowComboGhosting(List<CombatInput> currentCombatInputs, out bool isValidCombo, out bool finishedCombo)
     {
         List<Combo> potentialCombos = rhythmicCombos.GetPotentialCombos(currentCombatInputs);
 
