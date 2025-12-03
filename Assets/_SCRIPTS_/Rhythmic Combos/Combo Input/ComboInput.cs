@@ -5,7 +5,6 @@ public class ComboInput : MonoBehaviour
 {
     public ObjectPool objectPool;
     public BasicMetronomeObject basicMetronomeObject;
-    RhythmicCombos rhythmicCombos;
     RB_ComboGhosting comboGhosting;
 
     public bool makingCombo = false;
@@ -13,7 +12,6 @@ public class ComboInput : MonoBehaviour
 
     void Awake()
     {
-        rhythmicCombos = GetRhythmicCombos.Get();
         comboGhosting = GetComponent<RB_ComboGhosting>();
     }
 
@@ -31,6 +29,11 @@ public class ComboInput : MonoBehaviour
         Input.onCombat2 -= Combat2;
         Input.onCombat3 -= Combat3;
         Input.onCombat4 -= Combat4;
+    }
+
+    void RhythmTimer()
+    {
+        
     }
 
     void Combat1()

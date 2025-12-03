@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RhythmicCombo", menuName = "Scriptable Objects/RhythmicCombo")]
+[CreateAssetMenu(fileName = "RhythmicCombo", menuName = "Rhythm and Beats/RhythmicCombo", order = 1)]
 [System.Serializable]
 public class RhythmicCombos : ScriptableObject
 {

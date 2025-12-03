@@ -1,11 +1,16 @@
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class Input : MonoBehaviour
 {
     public static Action onCombat1, onCombat2, onCombat3, onCombat4;
 
     static Input instance;
+
+    public static Vector2 movement;
+
+    public enum Direction { none, north, east, south, west };
 
     void Awake()
     {
@@ -15,23 +20,47 @@ public class Input : MonoBehaviour
         instance = this;
     }
 
-    void OnCombat1()
+    public void OnCombat1(InputAction.CallbackContext context)
     {
         onCombat1?.Invoke();
     }
 
-    void OnCombat2()
+    public void OnCombat2(InputAction.CallbackContext context)
     {
         onCombat2?.Invoke();
     }
 
-    void OnCombat3()
+    public void OnCombat3(InputAction.CallbackContext context)
     {
         onCombat3?.Invoke();
     }
 
-    void OnCombat4()
+    public void OnCombat4(InputAction.CallbackContext context)
     {
         onCombat4?.Invoke();
+    }
+
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        movement = context.ReadValue<Vector2>();
+    }
+
+    public static Direction MovementAsDirection(bool favourX = true)
+    {
+        bool xIsBiggest = favourX ? Mathf.Abs(movement.x) * 0.5f > Mathf.Abs(movement.y) :  Mathf.Abs(movement.x) >= Mathf.Abs(movement.y) * 0.5f;
+
+        if (xIsBiggest)
+        {
+            if (Mathf.Abs(movement.x) < 0.2f) return Direction.none;
+            if (movement.x > 0) return Direction.east;
+            return Direction.west;
+        }
+        else
+        {
+            if (Mathf.Abs(movement.y) < 0.2f) return Direction.none;
+            if (movement.y > 0) return Direction.north;
+            return Direction.south;
+        }
     }
 }

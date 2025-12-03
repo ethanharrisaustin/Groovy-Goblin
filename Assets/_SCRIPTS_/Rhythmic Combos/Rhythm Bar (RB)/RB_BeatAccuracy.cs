@@ -1,16 +1,11 @@
 using UnityEngine;
 
-public class RB_BeatAccuracy : MonoBehaviour
+public class RB_BeatAccuracy
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static MusicRhythmTimer musicRhythmTimer { get { return MusicRhythmTimer.instance;  }}
+    
+    public static float CalculateAccuracy(CombatInput combatInput)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return 0f;
     }
 }
