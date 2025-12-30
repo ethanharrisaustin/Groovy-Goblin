@@ -30,10 +30,10 @@ public class RB_BeatSpawner : MonoBehaviour
         musicDelta = music.time - musicTimeLastFrame;
         musicTimeLastFrame = music.time;
 
-        Spawner();
+        _Spawner();
     }
 
-    void Spawner()
+    void _Spawner()
     {
         counter += musicDelta;
 
@@ -51,5 +51,23 @@ public class RB_BeatSpawner : MonoBehaviour
 
             currentBeat++;
         }
+    }
+
+    float beatCounter = 0f;
+    void Spawner()
+    {
+        beatCounter += Time.deltaTime;
+
+        if (beatCounter >= basicMetronomeObject.SecondsBetweenBeats())
+        {            
+            SpawnBeat();
+
+            beatCounter = 0;
+        }
+    }
+
+    void SpawnBeat()
+    {
+        
     }
 }

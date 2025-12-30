@@ -11,6 +11,8 @@ namespace MapRoomSystem
 
         public string[] values;
 
+        public string cachedRoomSaveID; // Set in RoomObjectSave
+
         public RoomObject(GameObject prefab, Vector3 position, Vector3 scale, Vector3 rotation, string[] values)
         {
             this.prefab = prefab;

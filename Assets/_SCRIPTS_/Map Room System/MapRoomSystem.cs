@@ -4,6 +4,7 @@ namespace MapRoomSystem
     using System.Threading.Tasks;
     using MapNavigation;
     using UnityEngine;
+    using Saving;
 
     public class MapRoomSystem : MonoBehaviour
     {
@@ -147,7 +148,7 @@ namespace MapRoomSystem
             OnStartRemoving();
             
             // While objects are spawning in, wait 
-            while(!FinishedFlyingOut()) await Task.Delay(20);
+            while(!FinishedFlyingOut()) await Task.Yield();
 
             SpawnRoom(room, currentRoom.roomUniqueID);
         }
@@ -173,6 +174,8 @@ namespace MapRoomSystem
 
         #endregion
 
+        #region Door transtion
+
         DoorRoomTransitionGO GetDoorRoomTransitionGO(string roomUniqueID)
         {
             for (int i = 0; i < roomObjectPools.Count; ++i)
@@ -190,7 +193,9 @@ namespace MapRoomSystem
             return null;
         }
 
-        #region General        
+        #endregion
+
+        #region General
 
         RoomObjectPool GetRoomObjectPool(RoomObject roomObject)
         {
@@ -296,6 +301,30 @@ namespace MapRoomSystem
         }
 
         #endif
+
+        #endregion
+
+        #region Saving Room States
+
+        public void SaveCurrentRoom()
+        {
+            if (currentRoom == null) return;
+
+            List<RoomObjectSave> roomObjectSaves = new List<RoomObjectSave>();
+
+            for (int x = 0; x < roomObjectPools.Count; ++x)
+            {
+                for (int y = 0; y < roomObjectPools[x].pool.Count; ++y)
+                {
+                    if (roomObjectPools[x].pool[y].GetRoomObjectSave(out RoomObjectSave roomObjectSave))
+                    {
+                        roomObjectSaves.Add(roomObjectSave);
+                    }
+                }
+            }
+
+            //Saving.Room room = Saving.Room.
+        }
 
         #endregion
     }

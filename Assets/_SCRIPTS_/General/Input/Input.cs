@@ -4,40 +4,107 @@ using UnityEngine.InputSystem;
 
 public class Input : MonoBehaviour
 {
-    public static Action onCombat1, onCombat2, onCombat3, onCombat4;
+    public static Action onCombat1, onCombat2, onCombat3, onCombat4;    
 
-    static Input instance;
+    public static Input instance;
 
     public static Vector2 movement;
 
+    private PlayerInput playerInput;
+
     public enum Direction { none, north, east, south, west };
+
+    public ControlScheme currentControlScheme;
+
+    public static Action<ControlScheme> OnControlSchemeChangedEvent;
+
+    public float delayBetweenCombatInputs = 0.1f;
+
+    public enum ControlScheme { Controller, KeyboardMouse, XboxController, PlaystationController, NitendoSwitch,  Error }
 
     void Awake()
     {
-        if (instance != null) Destroy(gameObject);
+        if (instance != null && instance != this) Destroy(gameObject);
 
-        DontDestroyOnLoad(gameObject);
         instance = this;
+    }
+
+    public static Input Main()
+    {
+        if (instance == null) instance = FindFirstObjectByType<Input>();
+        
+        return instance;
+    }
+
+    float combatInputTimer = 0f;
+    void Update()
+    {
+        combatInputTimer -= Time.deltaTime;
+    }
+
+    void Init()
+    {
+        if (playerInput != null) return;
+
+        playerInput = GetComponent<PlayerInput>();
+    }
+
+    public void OnControlSchemeChanged()
+    {
+        CheckCurrentControlScheme();
+    }
+
+    void CheckCurrentControlScheme()
+    {
+        Init();
+
+        switch (playerInput.currentControlScheme)
+        {
+            case "Keyboard&Mouse": currentControlScheme = ControlScheme.KeyboardMouse; break;
+            case "Gamepad": currentControlScheme = ControlScheme.Controller; break;
+            case "XboxController": currentControlScheme = ControlScheme.XboxController; break;
+            case "PlaystationController": currentControlScheme = ControlScheme.PlaystationController; break;
+            case "NitendoSwitch": currentControlScheme = ControlScheme.NitendoSwitch; break;
+            default: currentControlScheme = ControlScheme.Error; break;
+        }
+
+        OnControlSchemeChangedEvent?.Invoke(currentControlScheme);
     }
 
     public void OnCombat1(InputAction.CallbackContext context)
     {
+        if (!context.performed || combatInputTimer > 0f) return;
+
         onCombat1?.Invoke();
+
+        combatInputTimer = delayBetweenCombatInputs;
     }
 
     public void OnCombat2(InputAction.CallbackContext context)
     {
+        if (!context.performed || combatInputTimer > 0f) return;
+        
         onCombat2?.Invoke();
+
+        combatInputTimer = delayBetweenCombatInputs;
     }
 
     public void OnCombat3(InputAction.CallbackContext context)
     {
+        if (!context.performed || combatInputTimer > 0f) return;
+        
         onCombat3?.Invoke();
+
+        combatInputTimer = delayBetweenCombatInputs;
     }
 
     public void OnCombat4(InputAction.CallbackContext context)
     {
+        if (!context.performed || combatInputTimer > 0f) return;
+        
         onCombat4?.Invoke();
+
+        combatInputTimer = delayBetweenCombatInputs;
     }
 
 

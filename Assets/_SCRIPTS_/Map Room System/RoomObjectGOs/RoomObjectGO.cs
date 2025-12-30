@@ -43,10 +43,12 @@ namespace MapRoomSystem
             return flyingOut == false || gameObject.activeSelf == false;
         }
 
-        public Vector3 targetPosition;
+        [HideInInspector] public Vector3 targetPosition;
         bool flyingIn = false;
         public virtual void Spawn(RoomObject roomObject)
         {
+            transform.DOKill(false);
+
             transform.localScale = roomObject.scale;
             transform.eulerAngles = roomObject.rotation;
 
@@ -60,6 +62,8 @@ namespace MapRoomSystem
 
         public virtual void Remove()
         {
+            transform.DOKill(false);
+            
             FlyObjectOut(ObjectFlyInCategory());
         }
 
@@ -139,6 +143,34 @@ namespace MapRoomSystem
         public virtual void SetValues(string[] values)
         {
 
+        }
+
+        public virtual Vector3 GetPosition()
+        {
+            return transform.position;
+        }
+        public virtual Vector3 GetEulerAngles()
+        {
+            return transform.eulerAngles;
+        }
+        public virtual Quaternion GetRotation()
+        {
+            return transform.rotation;
+        }
+        public virtual Vector3 GetScale()
+        {
+            return transform.localScale;
+        }
+
+        public virtual bool GetRoomObjectSave(out RoomObjectSave roomObjectSave)
+        {
+            roomObjectSave = null;
+            return false;
+        }
+
+        public virtual string[] GetSaveValues()
+        {
+            return null;
         }
     }
 }

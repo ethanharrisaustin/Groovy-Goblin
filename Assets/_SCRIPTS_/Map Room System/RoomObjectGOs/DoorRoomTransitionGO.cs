@@ -12,9 +12,11 @@ namespace MapRoomSystem
         bool movingIntoDoor = false;
         bool playerNeedsToWalkAwayFirst = false;
 
-        public override void Init()
+        public async override void Init()
         {
             base.Init();
+
+            for (int i=0;i<3;++i) await Task.Yield();
 
             hasPlayer = ContainsPlayer();
 

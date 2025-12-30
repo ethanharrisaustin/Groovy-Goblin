@@ -1,18 +1,39 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_CombatInput : RB_Beat
+namespace Combat
 {
-    [Space]
-    public Sprite[] combatSprites;
-    public Color[] combatColours;
-    public Image combatAccuracyLineImg, controllerIconImg;
-
-    public override void SpawnBeat(int combatInput, BasicMetronomeObject basicMetronomeObject)
+    public class UI_CombatInput : RB_Beat
     {
-        base.SpawnBeat(0, basicMetronomeObject); // Make it new bar scale
+        [Space, Header("Combat Sprites")]
 
-        combatAccuracyLineImg.color = combatColours[combatInput];
-        controllerIconImg.sprite = combatSprites[combatInput];
+        public Sprite[] combatSpritesXbox;
+        public Sprite[] combatSpritesPS5;
+        public Sprite[] combatSpritesSwitch;
+        public Sprite[] combatSpritesControllerGeneral;
+        public Sprite[] combatSpritesArrowKeys;
+
+        [Space, Header("Combat Colours")]
+
+        public Color[] combatColoursXbox;
+        public Color[] combatColoursPS5;
+        public Color[] combatColoursGeneral;
+
+        [Space, Header("References")]
+
+        public Image combatAccuracyLineImg, controllerIconImg;
+
+        public override void SpawnBeat(int combatInput, BasicMetronomeObject basicMetronomeObject)
+        {
+            base.SpawnBeat(0, basicMetronomeObject); // Make it new bar scale
+
+            Sprite sprite;
+            Color elementColour, spriteColour;
+            CombatColours.GetElementFromInput(combatInput, out int _, out sprite, out elementColour, out spriteColour);
+
+            combatAccuracyLineImg.color = elementColour;
+            controllerIconImg.sprite = sprite;
+            controllerIconImg.color = spriteColour;
+        }
     }
 }

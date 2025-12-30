@@ -33,7 +33,7 @@ namespace MapNavigation
         }
         public void SetPositionTo(FloorTileGO floorTileGO, float moveTime)
         {
-            SetPositionTo(floorTileGO.transform.position, moveTime);
+            SetPositionTo(floorTileGO.GetPosition(), moveTime);
         }
 
         public void SetPositionTo(Vector3 position, float moveTime)
@@ -41,7 +41,7 @@ namespace MapNavigation
             objectIsMoving = true;
 
             transform.DOKill();
-            transform.DOMove(new Vector3(position.x,  transform.position.y, position.z), moveTime).SetEase(Ease.Linear).OnComplete(() => objectIsMoving = false);
+            transform.DOMove(position, moveTime).SetEase(Ease.Linear).OnComplete(() => objectIsMoving = false);
         }
 
         public virtual bool CanMoveNorth(out FloorTileGO floorTileNorth) { return CanMove(gridTriggerN, out floorTileNorth); }
