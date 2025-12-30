@@ -5,6 +5,8 @@ namespace MapRoomSystem
     using MapNavigation;
     using UnityEngine;
     using Saving;
+    using System;
+    using Unity.VisualScripting;
 
     public class MapRoomSystem : MonoBehaviour
     {
@@ -312,18 +314,51 @@ namespace MapRoomSystem
 
             List<RoomObjectSave> roomObjectSaves = new List<RoomObjectSave>();
 
-            for (int x = 0; x < roomObjectPools.Count; ++x)
+            LoopThroughRoomObjectPools((RoomObjectGO roomObjectGO) =>
             {
-                for (int y = 0; y < roomObjectPools[x].pool.Count; ++y)
-                {
-                    if (roomObjectPools[x].pool[y].GetRoomObjectSave(out RoomObjectSave roomObjectSave))
-                    {
-                        roomObjectSaves.Add(roomObjectSave);
-                    }
-                }
+                if (roomObjectGO.GetRoomObjectSave(out RoomObjectSave roomObjectSave)) roomObjectSaves.Add(roomObjectSave);
+            });
+
+            SaveManager roomSaveManager = Saving.Room.GetSaveManager();
+            roomSaveManager.SetRoomObjectArray(currentRoom.roomUniqueID, roomObjectSaves.ToArray());
+        }
+
+        void LoadCurrentRoom()
+        {
+            SaveManager roomSaveManager = Saving.Room.GetSaveManager();
+            
+            RoomObjectSave[] roomObjectSaves = roomSaveManager.GetRoomObjectArray(currentRoom.roomUniqueID, null);
+
+            if (roomObjectSaves == null) return;
+
+            LoopThroughRoomObjectPools((RoomObjectGO roomObjectGO) =>
+            {
+                RoomObjectSave c_roomObjectSave = GetRoomObjectSave(roomObjectSaves, roomObjectGO);
+                if (c_roomObjectSave == null) return;
+            });
+        }
+
+        void LoopThroughRoomObjectPools(Action<RoomObjectGO> action)
+        {
+            for (int x = 0; x < roomObjectPools.Count; ++x)
+            for (int y = 0; y < roomObjectPools[x].pool.Count; ++y)
+            {
+                if (roomObjectPools[x].pool[y].gameObject.activeSelf == false) continue;
+
+                action.Invoke(roomObjectPools[x].pool[y]);
+            }
+        }
+
+        RoomObjectSave GetRoomObjectSave(RoomObjectSave[] roomObjectSaves, RoomObjectGO roomObjectGO)
+        {
+            for (int i = 0; i < roomObjectSaves.Length; ++i)
+            {
+                if (RoomObjectSave.RoomObjectSaveID(roomObjectGO.roomObject) !=  roomObjectSaves[i].saveId) continue;
+
+                return roomObjectSaves[i];
             }
 
-            //Saving.Room room = Saving.Room.
+            return null;
         }
 
         #endregion
