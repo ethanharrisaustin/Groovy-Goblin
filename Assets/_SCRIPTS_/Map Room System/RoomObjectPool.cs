@@ -11,15 +11,17 @@ namespace MapRoomSystem
 
         public List<RoomObjectGO> pool = new List<RoomObjectGO>();
 
-        public void SpawnRoomObject(RoomObject roomObject)
+        public RoomObjectGO SpawnRoomObject(RoomObject roomObject)
         {
-            if (!RoomObject.PrefabIsMatching(roomObject, prefab)) return;
+            if (!RoomObject.PrefabIsMatching(roomObject, prefab)) return null;
 
             RoomObjectGO newRoomObjectGO = GetRoomObjectGO();
 
             newRoomObjectGO.transform.parent = transform;
 
             newRoomObjectGO.Spawn(roomObject);
+
+            return newRoomObjectGO;
         }
 
         public void DestroyRoomObject(RoomObject roomObject)

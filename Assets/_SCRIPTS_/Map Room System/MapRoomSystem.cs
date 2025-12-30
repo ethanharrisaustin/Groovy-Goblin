@@ -6,7 +6,6 @@ namespace MapRoomSystem
     using UnityEngine;
     using Saving;
     using System;
-    using Unity.VisualScripting;
 
     public class MapRoomSystem : MonoBehaviour
     {
@@ -61,11 +60,13 @@ namespace MapRoomSystem
             }
         }
 
-        public async void SpawnRoom(Room room, string entranceToPlacePlayer = "")
+        public async Task SpawnRoom(Room room, string entranceToPlacePlayer = "")
         {
             if (currentRoom == room) return;
 
             RemoveCurrentRoom();
+
+            RoomObjectSave[] roomObjectSaves = LoadRoom(room);
 
             // Spawn and set positions
             for (int i = 0; i < room.roomObjects.Length; ++i)
@@ -74,7 +75,15 @@ namespace MapRoomSystem
 
                 if (roomObjectPool == null) continue;
 
-                roomObjectPool.SpawnRoomObject(room.roomObjects[i]);
+                RoomObjectGO roomObjectGO = roomObjectPool.SpawnRoomObject(room.roomObjects[i]);
+
+                if (roomObjectGO == null) continue;
+
+                RoomObjectSave roomObjectSave = GetRoomObjectSave(roomObjectSaves, roomObjectGO);
+
+                if (roomObjectSave == null) continue;
+
+                roomObjectGO.LoadRoomObject(roomObjectSave);
             }
 
             currentRoom = room;
@@ -94,7 +103,7 @@ namespace MapRoomSystem
             OnStartSpawning();
 
             // While objects are spawning in, wait 
-            while(!FinishedFlyingIn()) await Task.Delay(20);
+            while(!FinishedFlyingIn()) await Task.Yield();
 
             // Once they have all been spawned, initialise them!
             for (int i = 0; i < roomObjectPools.Count; ++i) roomObjectPools[i].InitAllRoomObjects();
@@ -140,19 +149,16 @@ namespace MapRoomSystem
         {
             if (currentRoom == room) return;
 
-            for (int i = 0; i < roomObjectPools.Count; ++i)
-            {
-                if (roomObjectPools[i] == null) continue;
+            SaveCurrentRoom();
 
-                roomObjectPools[i].RemoveAllRoomObjects();
-            }
+            RemoveAllRoomObjects();
 
             OnStartRemoving();
             
             // While objects are spawning in, wait 
             while(!FinishedFlyingOut()) await Task.Yield();
 
-            SpawnRoom(room, currentRoom.roomUniqueID);
+            await SpawnRoom(room, currentRoom.roomUniqueID);
         }
 
         bool finishedFlyingOut = false;
@@ -172,6 +178,16 @@ namespace MapRoomSystem
 
             finishedFlyingOut = true;
             return true;
+        }
+
+        void RemoveAllRoomObjects()
+        {
+            for (int i = 0; i < roomObjectPools.Count; ++i)
+            {
+                if (roomObjectPools[i] == null) continue;
+
+                roomObjectPools[i].RemoveAllRoomObjects();
+            }
         }
 
         #endregion
@@ -323,19 +339,22 @@ namespace MapRoomSystem
             roomSaveManager.SetRoomObjectArray(currentRoom.roomUniqueID, roomObjectSaves.ToArray());
         }
 
-        void LoadCurrentRoom()
+        RoomObjectSave[] LoadRoom(Room room)
         {
             SaveManager roomSaveManager = Saving.Room.GetSaveManager();
             
-            RoomObjectSave[] roomObjectSaves = roomSaveManager.GetRoomObjectArray(currentRoom.roomUniqueID, null);
-
+            return roomSaveManager.GetRoomObjectArray(room.roomUniqueID, null);
+            /* 
             if (roomObjectSaves == null) return;
 
             LoopThroughRoomObjectPools((RoomObjectGO roomObjectGO) =>
             {
                 RoomObjectSave c_roomObjectSave = GetRoomObjectSave(roomObjectSaves, roomObjectGO);
                 if (c_roomObjectSave == null) return;
+
+
             });
+            */
         }
 
         void LoopThroughRoomObjectPools(Action<RoomObjectGO> action)

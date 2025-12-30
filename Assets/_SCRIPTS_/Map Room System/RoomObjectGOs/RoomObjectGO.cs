@@ -172,5 +172,10 @@ namespace MapRoomSystem
         {
             return null;
         }
+
+        public virtual void LoadRoomObject(RoomObjectSave roomObjectSave)
+        {
+            
+        }
     }
 }
