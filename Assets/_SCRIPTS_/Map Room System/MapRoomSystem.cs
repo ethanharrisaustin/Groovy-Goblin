@@ -25,6 +25,7 @@ namespace MapRoomSystem
         #endregion
         
         #region Monobehaviour Functions
+        
         void Awake()
         {
             instance = this;
@@ -60,7 +61,7 @@ namespace MapRoomSystem
             }
         }
 
-        public async Task SpawnRoom(Room room, string entranceToPlacePlayer = "")
+        public async void SpawnRoom(Room room, string entranceToPlacePlayer = "")
         {
             if (currentRoom == room) return;
 
@@ -158,7 +159,7 @@ namespace MapRoomSystem
             // While objects are spawning in, wait 
             while(!FinishedFlyingOut()) await Task.Yield();
 
-            await SpawnRoom(room, currentRoom.roomUniqueID);
+            SpawnRoom(room, currentRoom.roomUniqueID);
         }
 
         bool finishedFlyingOut = false;
@@ -344,17 +345,6 @@ namespace MapRoomSystem
             SaveManager roomSaveManager = Saving.Room.GetSaveManager();
             
             return roomSaveManager.GetRoomObjectArray(room.roomUniqueID, null);
-            /* 
-            if (roomObjectSaves == null) return;
-
-            LoopThroughRoomObjectPools((RoomObjectGO roomObjectGO) =>
-            {
-                RoomObjectSave c_roomObjectSave = GetRoomObjectSave(roomObjectSaves, roomObjectGO);
-                if (c_roomObjectSave == null) return;
-
-
-            });
-            */
         }
 
         void LoopThroughRoomObjectPools(Action<RoomObjectGO> action)
@@ -370,6 +360,8 @@ namespace MapRoomSystem
 
         RoomObjectSave GetRoomObjectSave(RoomObjectSave[] roomObjectSaves, RoomObjectGO roomObjectGO)
         {
+            if (roomObjectSaves == null) return null;
+
             for (int i = 0; i < roomObjectSaves.Length; ++i)
             {
                 if (RoomObjectSave.RoomObjectSaveID(roomObjectGO.roomObject) !=  roomObjectSaves[i].saveId) continue;
@@ -377,11 +369,73 @@ namespace MapRoomSystem
                 return roomObjectSaves[i];
             }
 
+            FindAnyObjectByType<GameObject>();
+
             return null;
         }
 
         #endregion
+   
+        #region Getting objects
+        
+        // Called on any OnDisable from any RoomObjectGO script
+        public static void OnRoomObjectWasDeactivated()
+        {
+            if (instance == null) return;
+
+            instance.cachedGetObjectGOs.Clear();
+        }
+
+        List<GetActiveRoomObjectGOsCached> cachedGetObjectGOs = new List<GetActiveRoomObjectGOsCached>();
+        public static T[] GetRoomObjectGOs<T>() where T : RoomObjectGO
+        {
+            return GetRoomObjectGOs<T>(out _);
+        }
+
+        public static T[] GetRoomObjectGOs<T>(out bool recalculated) where T : RoomObjectGO
+        {
+            recalculated = false;
+
+            // Return nothing is Awake() hasn't been called yet
+            if (instance == null) return new T[0];
+
+            // Return cached list of these objects
+            for (int i = 0; i < instance.cachedGetObjectGOs.Count; ++i)
+            {
+                if (instance.cachedGetObjectGOs[i].type != typeof(T)) continue;
+
+                return instance.cachedGetObjectGOs[i].cashedList as T[];
+            }
+
+            recalculated = true;
+
+            // Recalculate result
+            List<T> result = new List<T>();
+
+            for (int i = 0; i < instance.roomObjectPools.Count; ++i)
+            {
+                if (!instance.roomObjectPools[i].roomObjectGO is T) continue;
+
+                result.AddRange(instance.roomObjectPools[i].GetActives<T>());
+            }
+
+            instance.cachedGetObjectGOs.Add(new GetActiveRoomObjectGOsCached(typeof(T), result));
+
+            return result.ToArray();
+        }
+
+        class GetActiveRoomObjectGOsCached
+        {
+            public Type type;
+            public object cashedList;
+
+            public GetActiveRoomObjectGOsCached(Type type, object cashedList)
+            {
+                this.type = type;
+                this.cashedList = cashedList;
+            }
+        }
+
+        #endregion
     }
-
 }
-

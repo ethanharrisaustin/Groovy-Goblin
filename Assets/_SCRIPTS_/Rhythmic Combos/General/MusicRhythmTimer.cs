@@ -67,6 +67,44 @@ public class MusicRhythmTimer : MonoBehaviour
 
         return false;
     }
+
+    /// <summary>
+    /// This gives a percenage: 1 is bang on, 0 is just within allowence. Less than 0 means it was too off beat to be allowed!
+    /// </summary>
+    /// <returns></returns>
+    public float Accuracy()
+    {
+        return  (Allowence() - DistanceFromBeat()) / Allowence();
+    }
+
+    public float DistanceFromBeat()
+    {
+        float previousBeat = PreviousBeat();
+        float nextBeat = NextBeat();
+
+        // We are closer to previous beat 
+        if (ClosestToBeatA(previousBeat, nextBeat))
+        {
+            return Mathf.Abs(previousBeat);
+        }
+
+        return nextBeat;
+    }
+    
+    float PreviousBeat()
+    {
+        return -beatTimer;
+    }
+
+    float NextBeat()
+    {
+        return basicMetronomeObject.SecondsBetweenBeats() - beatTimer;
+    }
+
+    bool ClosestToBeatA(float a, float b)
+    {
+        return Mathf.Abs(a) > b;
+    }
     
     float Allowence()
     {

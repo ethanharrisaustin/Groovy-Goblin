@@ -11,7 +11,7 @@ public class RB_ComboGhosting : MonoBehaviour
         rhythmicCombos = RhythmicCombos.Get();
     }
 
-    public void ShowComboGhosting(List<CombatInput> currentCombatInputs, out bool isValidCombo, out bool finishedCombo)
+    public void ShowComboGhosting(List<CombatInput> currentCombatInputs, out bool isValidCombo, out bool finishedCombo, out Combo potentialCombo)
     {
         List<Combo> potentialCombos = rhythmicCombos.GetPotentialCombos(currentCombatInputs);
 
@@ -19,10 +19,11 @@ public class RB_ComboGhosting : MonoBehaviour
         {
             isValidCombo = false;
             finishedCombo = false;
+            potentialCombo = null;
             return;
         }
 
-        if (rhythmicCombos.CompletedCombo(currentCombatInputs, out Combo completedCombo))
+        if (rhythmicCombos.CompletedCombo(currentCombatInputs, out potentialCombo))
         {
             isValidCombo = true;
             finishedCombo = true;
@@ -31,5 +32,6 @@ public class RB_ComboGhosting : MonoBehaviour
 
         isValidCombo = true;
         finishedCombo = false;
+        potentialCombo = potentialCombos[0];
     }
 }

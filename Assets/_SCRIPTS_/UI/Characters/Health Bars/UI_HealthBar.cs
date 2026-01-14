@@ -24,9 +24,7 @@ public class UI_HealthBar : MonoBehaviour
 
         PositionHealthBar();
 
-        float targetFillAmount = HealthPercentage();
-        float currentFillAmount = fill.fillAmount;
-        fill.fillAmount = Mathf.SmoothDamp(currentFillAmount, targetFillAmount, ref refFillAmount, 0.2f);
+        ShowFill();
     }
 
     void PositionHealthBar()
@@ -34,6 +32,13 @@ public class UI_HealthBar : MonoBehaviour
         if (objectWithHealthGO == null) return;
          
         transform.position = Camera.main.WorldToScreenPoint(objectWithHealthGO.transform.position) + Vector3.up * objectWithHealthGO.HealthBarOffsetY();
+    }
+
+    void ShowFill()
+    {
+        float targetFillAmount = HealthPercentage();
+        float currentFillAmount = fill.fillAmount;
+        fill.fillAmount = Mathf.SmoothDamp(currentFillAmount, targetFillAmount, ref refFillAmount, 0.2f);
     }
 
     float HealthPercentage()

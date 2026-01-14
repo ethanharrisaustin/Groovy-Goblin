@@ -12,6 +12,8 @@ namespace MapRoomSystem
     {
         [HideInInspector] public RoomObject roomObject;
         [HideInInspector] public string[] objectValues;
+        [HideInInspector] public RoomObjectPool roomObjectPool;
+
 
         #if UNITY_EDITOR
         public RoomObject GetRoomObject()
@@ -103,6 +105,20 @@ namespace MapRoomSystem
             if (roomObjectGO == null) roomObjectGO = collider.GetComponentInParent<RoomObjectGO>();
 
             return roomObjectGO;
+        }
+
+        void OnDisable()
+        {
+            OnWasDeactivated();
+
+            MapRoomSystem.OnRoomObjectWasDeactivated();
+        }
+
+        void OnWasDeactivated()
+        {
+            if (roomObjectPool == null) return;
+
+            roomObjectPool.needsToRecalulateActives = true;
         }
 
         protected virtual void Awake()

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Basic Metronome 120
   m_EditorClassIdentifier: Assembly-CSharp::BasicMetronomeObject
   beatsInBar: 4
-  bpm: 80
+  bpm: 108

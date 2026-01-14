@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Combat
 {
     public class ComboInput : MonoBehaviour
@@ -10,7 +11,7 @@ namespace Combat
         RB_ComboGhosting comboGhosting;
 
         public bool makingCombo = false;
-        List<CombatInput> currentCombatInputs = new List<CombatInput>();
+        public List<CombatInput> currentCombatInputs = new List<CombatInput>();
 
         void Awake()
         {
@@ -66,18 +67,19 @@ namespace Combat
 
             makingCombo = true;
 
-            currentCombatInputs.Add(new CombatInput(new int[] { combatIndex }, 0f));
-
+            currentCombatInputs.Add(new CombatInput(new int[] { combatIndex }, MusicRhythmTimer.instance.Accuracy()));
 
             bool isValidCombo, finishedCombo;
-            comboGhosting.ShowComboGhosting(currentCombatInputs, out isValidCombo, out finishedCombo);
+            Combo potentialCombo;
+            comboGhosting.ShowComboGhosting(currentCombatInputs, out isValidCombo, out finishedCombo, out potentialCombo);
 
             if (finishedCombo)
             {
-                makingCombo = false;
-                currentCombatInputs.Clear();
+                // We can use this to attack an enemy
+                CombatAttack combatAttack = new CombatAttack(potentialCombo, currentCombatInputs);
 
-                FindFirstObjectByType<ObjectWithHealthGO>().ApplyDamange(40);
+                makingCombo = false;
+                currentCombatInputs.Clear();                
             }
 
             if (!isValidCombo)
@@ -85,8 +87,6 @@ namespace Combat
                 makingCombo = false;
                 currentCombatInputs.Clear();
             }
-
-            //Debug.Log("Valid Combo: " + isValidCombo + ", Finished Combo: " + finishedCombo);
         }
     }
 }

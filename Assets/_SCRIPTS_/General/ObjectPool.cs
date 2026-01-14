@@ -29,4 +29,9 @@ public class ObjectPool : MonoBehaviour
     {
         obj.SetActive(false);
     }
+
+    public void DestroyAll()
+    {
+        for (int i = 0; i < objectPool.Count; ++i) if (objectPool[i].activeSelf) objectPool[i].SetActive(false);
+    }
 }

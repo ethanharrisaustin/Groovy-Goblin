@@ -7,6 +7,7 @@ namespace MapRoomSystem
 {
     public class RoomObjectPool : MonoBehaviour
     {
+        public RoomObjectGO roomObjectGO = null;
         public GameObject prefab;
 
         public List<RoomObjectGO> pool = new List<RoomObjectGO>();
@@ -16,6 +17,8 @@ namespace MapRoomSystem
             if (!RoomObject.PrefabIsMatching(roomObject, prefab)) return null;
 
             RoomObjectGO newRoomObjectGO = GetRoomObjectGO();
+
+            if (roomObjectGO == null) roomObjectGO = newRoomObjectGO;
 
             newRoomObjectGO.transform.parent = transform;
 
@@ -92,6 +95,8 @@ namespace MapRoomSystem
 
         RoomObjectGO GetRoomObjectGO()
         {
+            needsToRecalulateActives = true;
+
             for (int i = 0; i < pool.Count; ++i)
             {
                 if (pool[i] == null)
@@ -120,6 +125,7 @@ namespace MapRoomSystem
 
             #endif
 
+            newRoomObjectGO.roomObjectPool = this;
             pool.Add(newRoomObjectGO);
 
             return newRoomObjectGO;
@@ -159,6 +165,37 @@ namespace MapRoomSystem
 
             finishedFlyingOut = true;
             return true;
+        }
+
+        public int NumberActive()
+        {
+            int total = 0;
+            for (int i = 0; i < pool.Count; ++i) if (pool[i].gameObject.activeSelf) total++;
+            return total;
+        }
+
+        [HideInInspector] public bool needsToRecalulateActives = true;
+        object previousActives = null;
+        public T[] GetActives<T>() where T:RoomObjectGO
+        {
+            // Return cached list of actives if we haven't spawned / removed any
+            if (!needsToRecalulateActives) return previousActives as T[];
+
+            T[] result = new T[NumberActive()];
+
+            int index = 0;
+            for (int i = 0; i < pool.Count; ++i)
+            {
+                if (pool[i].gameObject.activeSelf == false) continue;
+
+                result[index] = pool[i] as T;
+
+                ++index;
+            }
+
+            previousActives = result;
+
+            return result;
         }
 
         #region  Unity Editor

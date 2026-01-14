@@ -10,7 +10,7 @@ public class RB_BeatSpawner : MonoBehaviour
 
     public float counter = 0f;
 
-    int currentBeat = -2;
+    int currentBeat = 0;
 
     float musicTimeLastFrame = 0f;
 
@@ -29,6 +29,8 @@ public class RB_BeatSpawner : MonoBehaviour
     {
         musicDelta = music.time - musicTimeLastFrame;
         musicTimeLastFrame = music.time;
+
+        if (musicDelta < 0) return;
 
         _Spawner();
     }

@@ -33,6 +33,8 @@ public class RB_Beat : MonoBehaviour
 
     public void MoveBeat(float seconds)
     {
+        if (RB_BeatSpawner.musicDelta < 0) return;
+
         transform.localPosition = CreateVector2(transform.localPosition.x - seconds * RB_BeatSpawner.pixelsPerSecond);
 
         if (transform.localPosition.x < -basicMetronomeObject.beatsInBar * RB_BeatSpawner.pixelsPerSecond) gameObject.SetActive(false);

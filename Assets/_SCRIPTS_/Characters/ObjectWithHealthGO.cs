@@ -1,13 +1,16 @@
+using MapRoomSystem;
 using UnityEngine;
 
-public class ObjectWithHealthGO : MonoBehaviour
+public class ObjectWithHealthGO : RoomObjectGO
 {
     float startHealth;
     public float currentHealth;
     protected float healthBarOffsetY = 0.05f;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         startHealth = currentHealth;
     }
 
