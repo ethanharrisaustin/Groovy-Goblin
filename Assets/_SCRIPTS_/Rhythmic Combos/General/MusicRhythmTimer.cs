@@ -26,6 +26,8 @@ public class MusicRhythmTimer : MonoBehaviour
     {
         musicDelta = musicTimeLastFrame > music.time ? 0 : music.time - musicTimeLastFrame;
 
+        musicTimeLastFrame = music.time;
+
         beatTimer += musicDelta;
         barTimer += musicDelta;
 
@@ -98,6 +100,11 @@ public class MusicRhythmTimer : MonoBehaviour
         return instance.musicDelta;
     }
     
+    public static float SecondsBetweenBeats()
+    {
+        return instance.basicMetronomeObject.SecondsBetweenBeats();
+    }
+
     float PreviousBeat()
     {
         return -beatTimer;
