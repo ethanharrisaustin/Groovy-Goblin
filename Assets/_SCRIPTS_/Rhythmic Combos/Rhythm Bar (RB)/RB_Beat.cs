@@ -12,7 +12,7 @@ public class RB_Beat : MonoBehaviour
     void Update()
     {
         SetScale();
-        MoveBeat(RB_BeatSpawner.musicDelta);
+        MoveBeat(MusicRhythmTimer.MusicDelta());
     }
 
     public virtual void SpawnBeat(int beatNumber, BasicMetronomeObject basicMetronomeObject)
@@ -33,7 +33,7 @@ public class RB_Beat : MonoBehaviour
 
     public void MoveBeat(float seconds)
     {
-        if (RB_BeatSpawner.musicDelta < 0) return;
+        if (MusicRhythmTimer.MusicDelta() < 0) return;
 
         transform.localPosition = CreateVector2(transform.localPosition.x - seconds * RB_BeatSpawner.pixelsPerSecond);
 

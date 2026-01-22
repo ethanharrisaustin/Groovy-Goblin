@@ -12,10 +12,6 @@ public class RB_BeatSpawner : MonoBehaviour
 
     int currentBeat = 0;
 
-    float musicTimeLastFrame = 0f;
-
-    public static float musicDelta { get; private set; }
-
     public static float pixelsPerSecond { get { return instance._pixelsPerSecond; } }
 
     public static RB_BeatSpawner instance;
@@ -27,17 +23,14 @@ public class RB_BeatSpawner : MonoBehaviour
 
     void Update()
     {
-        musicDelta = music.time - musicTimeLastFrame;
-        musicTimeLastFrame = music.time;
-
-        if (musicDelta < 0) return;
+        if (MusicRhythmTimer.MusicDelta() < 0) return;
 
         _Spawner();
     }
 
     void _Spawner()
     {
-        counter += musicDelta;
+        counter += MusicRhythmTimer.MusicDelta();
 
         if (counter >= basicMetronomeObject.SecondsBetweenBeats())
         {            

@@ -15,6 +15,8 @@ public class MusicRhythmTimer : MonoBehaviour
 
     float musicTimeLastFrame = 0;
 
+    float musicDelta = 0f;
+
     void Awake()
     {
         instance = this;
@@ -22,7 +24,7 @@ public class MusicRhythmTimer : MonoBehaviour
     
     void Update()
     {
-        float musicDelta = musicTimeLastFrame > music.time ? 0 : music.time - musicTimeLastFrame;
+        musicDelta = musicTimeLastFrame > music.time ? 0 : music.time - musicTimeLastFrame;
 
         beatTimer += musicDelta;
         barTimer += musicDelta;
@@ -89,6 +91,11 @@ public class MusicRhythmTimer : MonoBehaviour
         }
 
         return nextBeat;
+    }
+
+    public static float MusicDelta()
+    {
+        return instance.musicDelta;
     }
     
     float PreviousBeat()
