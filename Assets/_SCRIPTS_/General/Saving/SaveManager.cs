@@ -4,7 +4,7 @@ namespace Saving
 	using System.IO;
 	using System.Collections.Generic;
 	using UnityEngine;
-    using MapRoomSystem;
+    using MapRooms;
 
     [System.Serializable]
 
@@ -77,13 +77,13 @@ namespace Saving
 
 		#region Monobehaviour functions
 
-		float autoSaveTimer = 0f;
+		//float autoSaveTimer = 0f;
 		private void Update()
 		{
 			DeleteDataListener();
 		}
 
-		float deleteKeyDown = 0f;
+		//float deleteKeyDown = 0f;
 		void DeleteDataListener()
 		{
 			/*

@@ -1,5 +1,5 @@
 using UnityEngine;
-using MapRoomSystem;
+using MapRooms;
 
 public class UI_HealthBarSpawner : MonoBehaviour
 {
@@ -35,7 +35,9 @@ public class UI_HealthBarSpawner : MonoBehaviour
     }
 
     ObjectWithHealthGO[] GetObjectWithHealthGOs(out bool recalculatedActives)
-    {
-        return MapRoomSystem.MapRoomSystem.GetRoomObjectGOs<ObjectWithHealthGO>(out recalculatedActives);
+    { 
+        recalculatedActives = true;
+        return FindObjectsByType<ObjectWithHealthGO>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        //return MapRoomSystem.MapRoomSystem.GetRoomObjectGOs<ObjectWithHealthGO>(out recalculatedActives);
     }
 }

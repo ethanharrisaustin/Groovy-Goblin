@@ -3,7 +3,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     public class LightGO : RoomObjectGO
     {

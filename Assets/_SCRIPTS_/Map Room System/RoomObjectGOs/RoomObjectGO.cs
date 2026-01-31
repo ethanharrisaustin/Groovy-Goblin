@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEditor;
 #endif
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     public class RoomObjectGO : MonoBehaviour
     {
@@ -164,6 +164,10 @@ namespace MapRoomSystem
         public virtual Vector3 GetPosition()
         {
             return transform.position;
+        }
+        public virtual Vector3 GetCenterPosition()
+        {
+            return transform.position + Vector3.up * 0.8f;
         }
         public virtual Vector3 GetEulerAngles()
         {

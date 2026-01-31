@@ -1,4 +1,4 @@
-namespace MapRoomSystem
+namespace MapRooms
 {
     [System.Serializable]
     public class RoomObjectSave

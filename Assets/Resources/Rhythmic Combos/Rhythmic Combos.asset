@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rhythmic Combos
   m_EditorClassIdentifier: Assembly-CSharp::RhythmicCombos
   combos:
-  - name: Boobs
+  - name: AAAB
     comboPieces:
     - beatBetweenPrevious: 1
       comboNumber: 1
@@ -23,5 +23,23 @@ MonoBehaviour:
       comboNumber: 1
     - beatBetweenPrevious: 1
       comboNumber: 2
-  - name: Ethan haaaaa
-    comboPieces: []
+  - name: BBYB
+    comboPieces:
+    - beatBetweenPrevious: 1
+      comboNumber: 2
+    - beatBetweenPrevious: 1
+      comboNumber: 2
+    - beatBetweenPrevious: 1
+      comboNumber: 4
+    - beatBetweenPrevious: 1
+      comboNumber: 2
+  - name: XXAX
+    comboPieces:
+    - beatBetweenPrevious: 1
+      comboNumber: 3
+    - beatBetweenPrevious: 1
+      comboNumber: 3
+    - beatBetweenPrevious: 1
+      comboNumber: 1
+    - beatBetweenPrevious: 1
+      comboNumber: 3

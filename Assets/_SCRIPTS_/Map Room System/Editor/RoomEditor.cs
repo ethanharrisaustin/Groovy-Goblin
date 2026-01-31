@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     [CustomEditor(typeof(Room))]
     public class RoomEditor : Editor

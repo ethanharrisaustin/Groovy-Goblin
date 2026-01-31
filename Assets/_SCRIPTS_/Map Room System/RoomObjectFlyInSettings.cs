@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     [CreateAssetMenu(fileName = "RoomObject Fly In Settings", menuName = "Map Room System/RoomObject Fly In Settings", order = 3)]
     public class RoomObjectFlyInSettings : ScriptableObject

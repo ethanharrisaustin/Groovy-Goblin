@@ -17,6 +17,8 @@ public class MusicRhythmTimer : MonoBehaviour
 
     float musicDelta = 0f;
 
+    bool increasedBeat = false;
+
     void Awake()
     {
         instance = this;
@@ -24,6 +26,7 @@ public class MusicRhythmTimer : MonoBehaviour
     
     void Update()
     {
+        increasedBeat = false;
         musicDelta = musicTimeLastFrame > music.time ? 0 : music.time - musicTimeLastFrame;
 
         musicTimeLastFrame = music.time;
@@ -36,6 +39,8 @@ public class MusicRhythmTimer : MonoBehaviour
             float remainder = beatTimer - basicMetronomeObject.SecondsBetweenBeats();
 
             beat++;
+
+            increasedBeat = true;
 
             if (beat > basicMetronomeObject.beatsInBar)
             {
@@ -103,6 +108,11 @@ public class MusicRhythmTimer : MonoBehaviour
     public static float SecondsBetweenBeats()
     {
         return instance.basicMetronomeObject.SecondsBetweenBeats();
+    }
+
+    public static bool BeatIncreased()
+    {
+        return instance.increasedBeat;
     }
 
     float PreviousBeat()

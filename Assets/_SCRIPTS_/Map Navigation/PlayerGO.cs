@@ -1,4 +1,4 @@
-using MapRoomSystem;
+using MapRooms;
 using UnityEngine;
 using static Input;
 
@@ -21,6 +21,13 @@ namespace MapNavigation
             instance = this;
         }
 
+        protected override void Start()
+        {
+            base.Start();
+
+            timeBetweenMovements = MusicRhythmTimer.SecondsBetweenBeats();
+        }
+
         protected override void Update()
         {
             base.Update();
@@ -40,11 +47,14 @@ namespace MapNavigation
             //if (direction != previousDirection) moveInputCooldown = 0f;
             previousDirection = direction;
 
+            /*
             if (moveInputCooldown > 0f)
             {
-                moveInputCooldown -= Time.deltaTime;
+                moveInputCooldown -= MusicRhythmTimer.MusicDelta();
                 return;
-            }
+            */
+
+            if (MusicRhythmTimer.BeatIncreased() == false) return;
 
             switch (direction)
             {
@@ -116,6 +126,9 @@ namespace MapNavigation
 
         public bool PlayerIsAbleToMove()
         {
+            // FOR NOW
+            return MusicRhythmTimer.BeatIncreased();
+
             if (playerIsActive == false) return false;
 
             return moveInputCooldown <= 0f;

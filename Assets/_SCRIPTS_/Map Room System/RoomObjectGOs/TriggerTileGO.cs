@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using MapNavigation;
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     public class TriggerTileGO : RoomObjectGO
     {

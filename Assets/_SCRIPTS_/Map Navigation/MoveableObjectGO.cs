@@ -1,5 +1,5 @@
 using DG.Tweening;
-using MapRoomSystem;
+using MapRooms;
 using UnityEngine;
 
 namespace MapNavigation

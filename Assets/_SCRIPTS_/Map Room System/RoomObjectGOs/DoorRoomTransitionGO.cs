@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using MapNavigation;
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     public class DoorRoomTransitionGO : TriggerTileGO
     {

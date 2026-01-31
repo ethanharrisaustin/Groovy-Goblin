@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     [CreateAssetMenu(fileName = "New Room", menuName = "Map Room System/Map Room", order = 0)]
     [System.Serializable]

@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     public class RoomObjectPool : MonoBehaviour
     {

@@ -1,4 +1,4 @@
-namespace MapRoomSystem
+namespace MapRooms
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -110,6 +110,8 @@ namespace MapRoomSystem
             for (int i = 0; i < roomObjectPools.Count; ++i) roomObjectPools[i].InitAllRoomObjects();
 
             PlayerGO.instance.ActivatePlayer();
+
+            MapToAStarGrid.instance.CreateAStarGrid();
         }
 
         bool finishedFlyingIn = false;
@@ -133,7 +135,7 @@ namespace MapRoomSystem
 
         #endregion
 
-        #region  Swapping to Rooms
+        #region Swapping to Rooms
 
         public void SwapToRoom(string roomUniqueID)
         {

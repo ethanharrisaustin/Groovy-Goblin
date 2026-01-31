@@ -6,7 +6,8 @@ public static class GetRhythmicCombos
 
     public static RhythmicCombos Get()
     {
-        if (cachedRhythmicCombos == null) cachedRhythmicCombos = Resources.LoadAll<RhythmicCombos>("")[0];
+        //if (cachedRhythmicCombos == null) 
+        cachedRhythmicCombos = Resources.LoadAll<RhythmicCombos>("")[0];
 
         return cachedRhythmicCombos;
     }

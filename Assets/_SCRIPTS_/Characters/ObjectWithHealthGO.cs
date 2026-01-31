@@ -1,41 +1,45 @@
-using MapRoomSystem;
 using UnityEngine;
 
-public class ObjectWithHealthGO : RoomObjectGO
+namespace MapRooms
 {
-    float startHealth;
-    public float currentHealth;
-    protected float healthBarOffsetY = 0.05f;
 
-    protected override void Awake()
+    public class ObjectWithHealthGO : RoomObjectGO
     {
-        base.Awake();
-        
-        startHealth = currentHealth;
-    }
+        float startHealth;
+        public float currentHealth;
+        protected float healthBarOffsetY = 0.05f;
 
-    public virtual void ApplyDamange(float damage)
-    {
-        currentHealth = Mathf.Max(currentHealth - damage, 0f);
-
-        if (currentHealth == 0f)
+        protected override void Awake()
         {
-            Die();
+            base.Awake();
+            
+            startHealth = currentHealth;
+        }
+
+        public virtual void ApplyDamange(float damage)
+        {
+            currentHealth = Mathf.Max(currentHealth - damage, 0f);
+
+            if (currentHealth == 0f)
+            {
+                Die();
+            }
+        }
+
+        public float HealthAsPercentage()
+        {
+            return currentHealth / startHealth * 100f;
+        }
+
+        public virtual void Die()
+        {
+            Destroy(gameObject);
+        }
+
+        public float HealthBarOffsetY()
+        {
+            return Screen.height * healthBarOffsetY;
         }
     }
 
-    public float HealthAsPercentage()
-    {
-        return currentHealth / startHealth * 100f;
-    }
-
-    public virtual void Die()
-    {
-        Destroy(gameObject);
-    }
-
-    public float HealthBarOffsetY()
-    {
-        return Screen.height * healthBarOffsetY;
-    }
 }

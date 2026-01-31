@@ -1,4 +1,4 @@
-namespace MapRoomSystem
+namespace MapRooms
 {
     using UnityEngine;
 

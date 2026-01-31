@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace MapRoomSystem
+namespace MapRooms
 {
     public class FloorTileGO : TriggerTileGO
     {
@@ -34,6 +34,14 @@ namespace MapRoomSystem
 
         public bool IsEmpty()
         {
+            #if UNITY_EDITOR
+            // If we haven't started playing yet 
+            if (MapRoomSystem.instance == null)
+            {
+                Init(); 
+            }
+            #endif
+
             return objectsOnTile.Count <= 0;
         }
 

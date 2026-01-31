@@ -13,6 +13,8 @@ namespace Combat
         public bool makingCombo = false;
         public List<CombatInput> currentCombatInputs = new List<CombatInput>();
 
+        float resetTimer = 0f;
+
         void Awake()
         {
             comboGhosting = GetComponent<RB_ComboGhosting>();
@@ -32,6 +34,19 @@ namespace Combat
             Input.onCombat2 -= Combat2;
             Input.onCombat3 -= Combat3;
             Input.onCombat4 -= Combat4;
+        }
+
+        void Update()
+        {
+            if (!makingCombo) return;
+
+            resetTimer += Time.deltaTime;
+
+            if (resetTimer > 1f)
+            {
+                makingCombo = false;
+                currentCombatInputs.Clear();
+            }
         }
 
         void RhythmTimer()
@@ -61,6 +76,8 @@ namespace Combat
 
         void SpawnCombatInput(int combatIndex)
         {
+            resetTimer = 0f;
+
             UI_CombatInput combatInput = objectPool.SpawnObject().GetComponent<UI_CombatInput>();
 
             combatInput.SpawnBeat(combatIndex, basicMetronomeObject);
@@ -73,13 +90,19 @@ namespace Combat
             Combo potentialCombo;
             comboGhosting.ShowComboGhosting(currentCombatInputs, out isValidCombo, out finishedCombo, out potentialCombo);
 
+            finishedCombo = currentCombatInputs.Count >= 4; // TO DO: check why 'out finishedCombo' from comboGhosting.ShowComboGhosting() isn't working!
+
             if (finishedCombo)
             {
                 // We can use this to attack an enemy
                 CombatAttack combatAttack = new CombatAttack(potentialCombo, currentCombatInputs);
 
+                MagicOrbSpawner.instance.SpawnMagicOrbs(combatAttack);   
+
                 makingCombo = false;
-                currentCombatInputs.Clear();                
+                currentCombatInputs.Clear();    
+
+                return;  
             }
 
             if (!isValidCombo)
