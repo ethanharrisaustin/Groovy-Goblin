@@ -1,4 +1,5 @@
 using UnityEngine;
+using FMOD;
 
 public class MusicRhythmTimer : MonoBehaviour
 {
