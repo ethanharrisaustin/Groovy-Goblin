@@ -599,9 +599,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: ../../Coursework/Project work/FMOD/Goblins and Groove/Goblins
-    and Groove.fspro
-  sourceBankPath: ../../Coursework/Project work/FMOD/Goblins and Groove/Build
+  sourceProjectPath: Assets/FMOD/Goblins and Groove 2/Goblins and Groove 2.fspro
+  sourceBankPath: Assets/FMOD/Goblins and Groove 2/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1

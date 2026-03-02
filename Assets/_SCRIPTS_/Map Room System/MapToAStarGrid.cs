@@ -20,21 +20,27 @@ namespace MapRooms
         // Update is called once per frame
         void Update()
         {
-            //CreateAStarGrid();
+            CreateAStarGrid();
             UpdateObstacles();
         }
 
         // To be called after a room transition has completed
         public void CreateAStarGrid()
         {
-            floorTiles = MapRoomSystem.GetRoomObjectGOs<FloorTileGO>();
-
-            Debug.Log("Length of floor tiles! " + floorTiles.Length);
+            floorTiles = MapRoomSystem.GetRoomObjectGOs<FloorTileGO>();  
 
             if (instance == null)
             {
                 floorTiles = FindObjectsByType<FloorTileGO>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             }
+
+            if (floorTiles == null)
+            {
+                Debug.Log("Floor tiles array is null");
+                return;
+            }
+
+            Debug.Log("Length of floor tiles! " + floorTiles.Length);
 
             startPosOfGrid = GetStartPositionOfGrid();
             endPosOfGrid = GetEndPositionOfGrid();
@@ -71,6 +77,8 @@ namespace MapRooms
 
             for (int i = 0; i < floorTiles.Length; ++i)
             {
+                if (floorTiles[i] == null) continue;
+                
                 Vector3 tilePosition = floorTiles[i].GetPosition();
                 if (tilePosition.x < smallestX) smallestX = tilePosition.x;
                 if (tilePosition.z < smallestZ) smallestZ = tilePosition.z;
@@ -86,6 +94,8 @@ namespace MapRooms
 
             for (int i = 0; i < floorTiles.Length; ++i)
             {
+                if (floorTiles[i] == null) continue;
+                
                 Vector3 tilePosition = floorTiles[i].GetPosition();
                 if (tilePosition.x > largestX) largestX = tilePosition.x;
                 if (tilePosition.z > largestZ) largestZ = tilePosition.z;

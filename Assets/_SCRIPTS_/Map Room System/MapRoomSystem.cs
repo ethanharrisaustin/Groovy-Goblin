@@ -401,6 +401,7 @@ namespace MapRooms
             // Return nothing is Awake() hasn't been called yet
             if (instance == null) return new T[0];
 
+            /* 
             // Return cached list of these objects
             for (int i = 0; i < instance.cachedGetObjectGOs.Count; ++i)
             {
@@ -408,7 +409,7 @@ namespace MapRooms
 
                 return instance.cachedGetObjectGOs[i].cashedList as T[];
             }
-
+            */
             recalculated = true;
 
             // Recalculate result

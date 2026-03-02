@@ -34,27 +34,29 @@ namespace MapNavigation
 
             if (!playerIsActive) return;
 
+            GetInputs();
+
+            if (MusicRhythmTimer.BeatIncreased() == false) return;
+
             MovementHandler();
         }
 
-        Direction previousDirection;
+        Direction direction;
+        void GetInputs()
+        {
+            if (MovementAsDirection(favourX) == Direction.none) return;
+
+            direction = MovementAsDirection(favourX);
+        }
+
+        //Direction previousDirection;
         float moveInputCooldown = 0f;
         bool favourX = false;
         void MovementHandler()
         {
-            Direction direction = MovementAsDirection(favourX);
-
             //if (direction != previousDirection) moveInputCooldown = 0f;
-            previousDirection = direction;
 
-            /*
-            if (moveInputCooldown > 0f)
-            {
-                moveInputCooldown -= MusicRhythmTimer.MusicDelta();
-                return;
-            */
-
-            if (MusicRhythmTimer.BeatIncreased() == false) return;
+            //previousDirection = direction;
 
             switch (direction)
             {
@@ -82,6 +84,8 @@ namespace MapNavigation
             }
 
             moveInputCooldown = timeBetweenMovements <= moveToTileTime ? moveToTileTime * 0.995f : timeBetweenMovements;
+
+            direction = Direction.none;
         }
 
         public virtual void MoveNorthInput()
@@ -129,9 +133,9 @@ namespace MapNavigation
             // FOR NOW
             return MusicRhythmTimer.BeatIncreased();
 
-            if (playerIsActive == false) return false;
+            //if (playerIsActive == false) return false;
 
-            return moveInputCooldown <= 0f;
+            //return moveInputCooldown <= 0f;
         }
     }
 }

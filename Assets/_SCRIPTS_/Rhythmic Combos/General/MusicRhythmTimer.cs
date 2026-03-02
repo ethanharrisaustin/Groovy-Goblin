@@ -4,7 +4,6 @@ using FMOD;
 public class MusicRhythmTimer : MonoBehaviour
 {
     public BasicMetronomeObject basicMetronomeObject;
-    public AudioSource music;
 
     public static MusicRhythmTimer instance;
 
@@ -19,6 +18,8 @@ public class MusicRhythmTimer : MonoBehaviour
     float musicDelta = 0f;
 
     bool increasedBeat = false;
+    bool offBeatIncreased = false;
+    bool offBeatWaiting = false;
 
     void Awake()
     {
@@ -27,10 +28,25 @@ public class MusicRhythmTimer : MonoBehaviour
     
     void Update()
     {
-        increasedBeat = false;
-        musicDelta = musicTimeLastFrame > music.time ? 0 : music.time - musicTimeLastFrame;
+        CalculateMusicDelta();
 
-        musicTimeLastFrame = music.time;
+        BeatsAndBars();
+
+        OffBeats();
+    }
+
+    void CalculateMusicDelta()
+    {
+        float time = AudioManager.MusicTime();
+
+        musicDelta = musicTimeLastFrame > time ? 0 : time - musicTimeLastFrame;
+
+        musicTimeLastFrame = time;
+    }
+
+    void BeatsAndBars()
+    {
+        increasedBeat = false;
 
         beatTimer += musicDelta;
         barTimer += musicDelta;
@@ -53,6 +69,28 @@ public class MusicRhythmTimer : MonoBehaviour
             beatTimer = remainder;
         }
     }
+
+    void OffBeats()
+    {
+        offBeatIncreased = false;
+
+        if (offBeatWaiting)
+        {
+            if (increasedBeat)
+            {
+                offBeatWaiting = false;
+            }
+            return;    
+        }
+
+        if (beatTimer >= basicMetronomeObject.SecondsBetweenBeats() * 0.5f)
+        {
+            offBeatIncreased = true;
+
+            offBeatWaiting = true;
+        }
+    }
+
 
     public bool OnBar()
     {
@@ -114,6 +152,20 @@ public class MusicRhythmTimer : MonoBehaviour
     public static bool BeatIncreased()
     {
         return instance.increasedBeat;
+    }
+
+    /// <summary>
+    /// When the music has increased by half a beat's worth of seconds.
+    /// (Use OffBeatIncreased() to make object move on every off beat.)
+    /// </summary>
+    public static bool HalfBeatIncreased()
+    {
+        return instance.increasedBeat || instance.offBeatIncreased;
+    }
+
+    public static bool OffBeatIncreased()
+    {
+        return instance.offBeatIncreased;
     }
 
     float PreviousBeat()

@@ -1911,7 +1911,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicRhythmTimer
   basicMetronomeObject: {fileID: 11400000, guid: a79a2b5089f554180ad725031b3928a7, type: 2}
-  music: {fileID: 0}
 --- !u!4 &237262624
 Transform:
   m_ObjectHideFlags: 0
@@ -14512,7 +14511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7353880554d484f9fd61e4af26fecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FMODEvents
-  <rankSystem>k__BackingField:
+  <music>k__BackingField:
     Guid:
       Data1: 1004230065
       Data2: 1224879447
