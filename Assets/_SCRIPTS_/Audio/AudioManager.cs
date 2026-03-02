@@ -2,6 +2,8 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
+using FMOD;
 
 public class AudioManager : MonoBehaviour
 {
@@ -67,4 +69,17 @@ public class AudioManager : MonoBehaviour
     {
         CleanUp(); 
     }
+
+    // Called from MusicRhythmTimer.cs in Update() to calculate MusicDelta
+    public static float MusicTime()
+    {
+        instance.musicEventInstance.getChannelGroup(out ChannelGroup channelGroup);
+
+        channelGroup.getDSPClock(out ulong clock, out _);
+        RuntimeManager.CoreSystem.getSoftwareFormat(out int sampleRate, out _, out _);
+
+        return clock / (float)sampleRate;
+    }
+
+    
 }
