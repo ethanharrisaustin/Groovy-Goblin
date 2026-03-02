@@ -331,7 +331,9 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     prefab: {fileID: 0}
     values: []
+    cachedRoomSaveID: 
   objectValues: []
+  roomObjectPool: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   tileTrigger: {fileID: 8912145367018361558}
   layerMask:
@@ -493,15 +495,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.23545457
+      value: 0.219
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7523583
+      value: -0.748
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.07432085
+      value: -0.0631
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalRotation.w
@@ -571,15 +573,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.23545457
+      value: 0.219
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7523583
+      value: -0.748
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.07432085
+      value: -0.0639
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178576c65ae414dcbb82908aa010c162, type: 3}
       propertyPath: m_LocalRotation.w
