@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1922738120475634005
+--- !u!114 &-3910870697214867013
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,15 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/DynamicMusic.bank
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
-  Path: ../../../../../Desktop/Goblins and Groove/Build/Desktop/Master.bank
-  Name: Master
-  StudioPath: bank:/Master
-  lastModified: 639074861880000000
+  Path: ../../Coursework/Project work/FMOD/Goblins and Groove/Build/Desktop/DynamicMusic.bank
+  Name: DynamicMusic
+  StudioPath: bank:/DynamicMusic
+  lastModified: 639074884531630651
   FileSizes:
   - Name: Desktop
-    Value: 1074
+    Value: 444320
+  Exists: 1
+--- !u!114 &-2391397587812820904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
+  Path: ../../Coursework/Project work/FMOD/Goblins and Groove/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 639074861867338854
+  FileSizes:
+  - Name: Desktop
+    Value: 872
   Exists: 1
 --- !u!114 &-107449576618672918
 MonoBehaviour:
@@ -39,7 +59,7 @@ MonoBehaviour:
     Data3: -652151647
     Data4: -2107161915
   Banks:
-  - {fileID: 2500965979040487099}
+  - {fileID: -3910870697214867013}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -61,22 +81,22 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EventCache
   EditorBanks:
-  - {fileID: 3349701576820321482}
-  - {fileID: 2500965979040487099}
-  - {fileID: -1922738120475634005}
+  - {fileID: -2391397587812820904}
+  - {fileID: -3910870697214867013}
+  - {fileID: 7937336059649764817}
   EditorEvents:
   - {fileID: -107449576618672918}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -1922738120475634005}
+  - {fileID: 7937336059649764817}
   StringsBanks:
-  - {fileID: 3349701576820321482}
+  - {fileID: -2391397587812820904}
   cacheVersion: 131858
-  cacheTime: 639074884540000000
+  cacheTime: 639074884531630651
   SerializableEventsDict:
   - key: event:/RankSystem
     index: 0
---- !u!114 &2500965979040487099
+--- !u!114 &7937336059649764817
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,35 +106,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/DynamicMusic.bank
+  m_Name: bank:/Master.bank
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
-  Path: ../../../../../Desktop/Goblins and Groove/Build/Desktop/DynamicMusic.bank
-  Name: DynamicMusic
-  StudioPath: bank:/DynamicMusic
-  lastModified: 639074884540000000
+  Path: ../../Coursework/Project work/FMOD/Goblins and Groove/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 639074861867333599
   FileSizes:
   - Name: Desktop
-    Value: 444320
-  Exists: 1
---- !u!114 &3349701576820321482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.strings.bank
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
-  Path: ../../../../../Desktop/Goblins and Groove/Build/Desktop/Master.strings.bank
-  Name: Master.strings
-  StudioPath: bank:/Master.strings
-  lastModified: 639074861880000000
-  FileSizes:
-  - Name: Desktop
-    Value: 872
+    Value: 1074
   Exists: 1
 --- !u!114 &8875350848798296534
 MonoBehaviour:
