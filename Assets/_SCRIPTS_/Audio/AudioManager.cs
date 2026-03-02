@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("More than one Audio Manager Found"); // We only want one Audio Manager in the scene!
+            UnityEngine.Debug.LogError("More than one Audio Manager Found"); // We only want one Audio Manager in the scene!
         }
          
         instance = this;
