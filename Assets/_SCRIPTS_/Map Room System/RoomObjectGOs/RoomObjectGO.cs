@@ -181,6 +181,40 @@ namespace MapRooms
         {
             return transform.localScale;
         }
+        public virtual Vector3[] GetAdjacentCardinalTiles()
+        {
+            return new Vector3[]
+            {
+                GetPosition() + Vector3.left,
+                GetPosition() + Vector3.forward,
+                GetPosition() + Vector3.right,
+                GetPosition() + Vector3.back,
+            };
+        }
+        public virtual Vector3[] GetAdjacentDiagonalTiles()
+        {
+            return new Vector3[]
+            {
+                GetPosition() + Vector3.left + Vector3.forward,
+                GetPosition() + Vector3.right + Vector3.forward,
+                GetPosition() + Vector3.right + Vector3.back,
+                GetPosition() + Vector3.left + Vector3.back,
+            };
+        }
+        public virtual Vector3[] GetAdjacentTiles()
+        {
+            return new Vector3[]
+            {
+                GetPosition() + Vector3.left,
+                GetPosition() + Vector3.left + Vector3.forward,
+                GetPosition() + Vector3.forward,
+                GetPosition() + Vector3.right + Vector3.forward,
+                GetPosition() + Vector3.right,
+                GetPosition() + Vector3.right + Vector3.back,
+                GetPosition() + Vector3.back,
+                GetPosition() + Vector3.left + Vector3.back,
+            };
+        }
 
         public virtual bool GetRoomObjectSave(out RoomObjectSave roomObjectSave)
         {

@@ -65,6 +65,8 @@ namespace MapRooms
         {
             if (currentRoom == room) return;
 
+            Debug.Log("Spawning Room: " + room.roomUniqueID);
+            
             RemoveCurrentRoom();
 
             RoomObjectSave[] roomObjectSaves = LoadRoom(room);

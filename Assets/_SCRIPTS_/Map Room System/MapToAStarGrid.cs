@@ -36,11 +36,11 @@ namespace MapRooms
 
             if (floorTiles == null)
             {
-                Debug.Log("Floor tiles array is null");
+                //Debug.Log("Floor tiles array is null");
                 return;
             }
 
-            Debug.Log("Length of floor tiles! " + floorTiles.Length);
+            //Debug.Log("Length of floor tiles! " + floorTiles.Length);
 
             startPosOfGrid = GetStartPositionOfGrid();
             endPosOfGrid = GetEndPositionOfGrid();
@@ -111,7 +111,7 @@ namespace MapRooms
             return floorTileGO != null && !floorTileGO.IsEmpty();
         }
 
-        bool TileIsObstacle(Vector2Int gridPosition)
+        public bool TileIsObstacle(Vector2Int gridPosition)
         {
             FloorTileGO floorTileGO = GetTile(gridPosition);
 

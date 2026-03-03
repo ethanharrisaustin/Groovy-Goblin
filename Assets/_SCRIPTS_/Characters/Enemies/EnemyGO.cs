@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using DG.Tweening;
 using MapNavigation;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace MapRooms
 {
     public class EnemyGO : ObjectWithHealthGO
     {
         public bool canMoveDiagonally = false;
+        public float moveTime = 0.2f;
 
         protected override void Update()
         {
             base.Update();
 
-            if (!MusicRhythmTimer.BeatIncreased()) return;
+            if (!MusicRhythmTimer.OffBeatIncreased()) return;
 
             MoveTowardsPlayer();
         }
@@ -23,9 +23,9 @@ namespace MapRooms
         {
             GridPathfinding.allowDiagonalMovement = canMoveDiagonally;
             
-            Vector3 playerWorldPos = PlayerGO.instance.GetPosition();
+            Vector3 playerWorldPos = ClosestPosFromPlayer();
 
-            List<Vector3> pathToPlayer = GridPathfinding.FindPathWorld(GetCenterPosition(), playerWorldPos + Vector3.one * 0.5f);
+            List<Vector3> pathToPlayer = GridPathfinding.FindPathWorld(GetCenterPosition(), playerWorldPos );
 
             if (pathToPlayer.Count <= 1) return;
 
@@ -34,7 +34,71 @@ namespace MapRooms
 
         void MoveToPos(Vector3 position)
         {
-            transform.DOMove(new Vector3(position.x, transform.position.y, position.z), 0.2f).SetEase(Ease.InOutQuad);
+            Input.Direction directionToMove = DirectionFromAToB(transform.position, position);
+
+            FloorTileGO floorTileGO;
+
+            switch(directionToMove)
+            {
+                case Input.Direction.north:
+                    if (!CanMoveNorth(out floorTileGO)) return;
+                    break;
+
+                case Input.Direction.east:
+                    if (!CanMoveEast(out floorTileGO)) return;
+                    break;
+
+                case Input.Direction.south:
+                    if (!CanMoveSouth(out floorTileGO)) return;
+                    break;
+
+                case Input.Direction.west:
+                    if (!CanMoveWest(out floorTileGO)) return;
+                    break;
+
+                default: return;
+            }
+
+            floorTileGO.AddToTile(this);
+            GetFloorTileCentre().RemoveToTile(this);
+            SetPositionTo(floorTileGO);
+        }
+
+        Vector3 ClosestPosFromPlayer()
+        {
+            Vector3[] adjacentTiles = AdjacentTiles();
+
+            float shortestDistance = Mathf.Infinity;
+            float currentDistance;
+            Vector3 chosenTile = PlayerGO.instance.GetPosition();
+            for (int i = 0; i < adjacentTiles.Length; ++i)
+            {
+                Vector2Int tilePos = MapToAStarGrid.WorldLocationToAStarGridPosition(adjacentTiles[i]);
+
+                if (MapToAStarGrid.instance.TileIsObstacle(tilePos)) continue;
+
+                currentDistance = Vector3.Distance(adjacentTiles[i], GetPosition());
+
+                if (currentDistance >= shortestDistance) continue;
+
+                shortestDistance = currentDistance;
+
+                chosenTile = adjacentTiles[i];
+            }
+
+            return chosenTile;
+        }
+
+        Vector3[] AdjacentTiles()
+        {
+            if (canMoveDiagonally)
+            {
+                return PlayerGO.instance.GetAdjacentTiles();
+            }
+            else
+            {
+                return PlayerGO.instance.GetAdjacentCardinalTiles();
+            }
         }
     }
 }

@@ -1,9 +1,10 @@
+using MapNavigation;
 using UnityEngine;
 
 namespace MapRooms
 {
 
-    public class ObjectWithHealthGO : RoomObjectGO
+    public class ObjectWithHealthGO : MoveableObjectGO
     {
         float startHealth;
         public float currentHealth;

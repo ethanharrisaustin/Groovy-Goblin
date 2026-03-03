@@ -1,6 +1,7 @@
 using DG.Tweening;
 using MapRooms;
 using UnityEngine;
+using static Input;
 
 namespace MapNavigation
 {
@@ -26,22 +27,31 @@ namespace MapNavigation
             gridTriggersHolder.rotation = Quaternion.identity;
         }
 
-
+        /* 
         protected void SetPositionTo(FloorTileGO floorTileGO)
         {
             transform.position = new Vector3(floorTileGO.transform.position.x,  transform.position.y, floorTileGO.transform.position.z);
         }
-        public void SetPositionTo(FloorTileGO floorTileGO, float moveTime)
-        {
-            SetPositionTo(floorTileGO.GetPosition(), moveTime);
+        */
+        public void SetPositionTo(FloorTileGO floorTileGO)
+        { 
+            SetPositionTo(floorTileGO.GetPosition());
         }
 
-        public void SetPositionTo(Vector3 position, float moveTime)
+        public void SetPositionTo(Vector3 position)
         {
+            CharacterJumpSettings.GetSettings(out var jumpYCurve, out var jumpXZCurve, out var jumpTime, out var jumpHeight);
+
             objectIsMoving = true;
 
             transform.DOKill();
-            transform.DOMove(position, moveTime).SetEase(Ease.Linear).OnComplete(() => objectIsMoving = false);
+            transform.DOMoveX(position.x, jumpTime).SetEase(jumpXZCurve);
+            transform.DOMoveZ(position.z, jumpTime).SetEase(jumpXZCurve);
+            transform.DOMoveY(JumpPos(position, jumpHeight), jumpTime).SetEase(jumpYCurve).OnComplete(() => 
+            {
+                objectIsMoving = false;
+                transform.position = position;
+            });
         }
 
         public virtual bool CanMoveNorth(out FloorTileGO floorTileNorth) { return CanMove(gridTriggerN, out floorTileNorth); }
@@ -62,6 +72,7 @@ namespace MapNavigation
         public virtual FloorTileGO GetFloorTileEast() { return GetFloorTile(gridTriggerE); }
         public virtual FloorTileGO GetFloorTileSouth() { return GetFloorTile(gridTriggerS); }
         public virtual FloorTileGO GetFloorTileWest() { return GetFloorTile(gridTriggerW); }
+        public virtual FloorTileGO GetFloorTileCentre() { return GetFloorTile(gridTriggerCenter.transform); }
         
         public virtual FloorTileGO GetFloorTile(Transform gridTrigger)
         {
@@ -73,6 +84,35 @@ namespace MapNavigation
         public bool ObjectIsMoving()
         {
             return objectIsMoving;
+        }
+
+        public Direction DirectionFromAToB(Vector3 posA, Vector3 posB)
+        {
+            float absX = Mathf.Abs(posA.x - posB.x);
+            float absZ = Mathf.Abs(posA.z - posB.z);
+
+            if (absX > absZ)
+            {
+                if (posA.x > posB.x) return Direction.west;
+
+                return Direction.east;
+            }
+
+            if (posA.z > posB.z) return Direction.south;
+
+            return Direction.north;
+        }
+
+        float JumpPos(Vector3 position, float jumpHeight)
+        {
+            float maxY = MaxY(position, transform.position);
+
+            return maxY + jumpHeight;
+        }
+
+        float MaxY(Vector3 a, Vector3 b)
+        {
+            return Mathf.Max(a.y, b.y);
         }
     }
 }

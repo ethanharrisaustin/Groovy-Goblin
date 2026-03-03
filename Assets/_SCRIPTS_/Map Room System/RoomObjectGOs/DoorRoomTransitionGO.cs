@@ -101,7 +101,7 @@ namespace MapRooms
 
         async void MoveToRoom()
         {
-            PlayerGO.instance.SetPositionTo(transform.position, PlayerGO.instance.moveToTileTime);
+            PlayerGO.instance.SetPositionTo(transform.position/*, PlayerGO.instance.moveToTileTime*/);
 
             await Task.Delay((int)(1000 * PlayerGO.instance.moveToTileTime));
 

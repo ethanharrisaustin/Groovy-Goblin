@@ -93,28 +93,28 @@ namespace MapNavigation
             FloorTileGO newFloorTile;
             if (!CanMoveNorth(out newFloorTile)) return;
 
-            SetPositionTo(newFloorTile, moveToTileTime);
+            SetPositionTo(newFloorTile);
         }
         public virtual void MoveEastInput()
         {
             FloorTileGO newFloorTile;
             if (!CanMoveEast(out newFloorTile)) return;
 
-           SetPositionTo(newFloorTile, moveToTileTime);
+           SetPositionTo(newFloorTile);
         }
         public virtual void MoveSouthInput()
         {
             FloorTileGO newFloorTile;
             if (!CanMoveSouth(out newFloorTile)) return;
 
-            SetPositionTo(newFloorTile, moveToTileTime);
+            SetPositionTo(newFloorTile);
         }
         public virtual void MoveWestInput()
         {
             FloorTileGO newFloorTile;
             if (!CanMoveWest(out newFloorTile)) return;
 
-            SetPositionTo(newFloorTile, moveToTileTime);
+            SetPositionTo(newFloorTile);
         }
 
         public void DeactivatedPlayer()

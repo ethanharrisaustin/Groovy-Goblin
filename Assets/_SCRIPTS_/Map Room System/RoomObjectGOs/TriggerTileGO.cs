@@ -79,5 +79,17 @@ namespace MapRooms
 
             return false;
         }
+
+        public void AddToTile(RoomObjectGO roomObjectGO)
+        {
+            if (RoomObjectAlreadyOnTile(roomObjectGO)) return;
+
+            objectsOnTile.Add(roomObjectGO);
+        }
+
+        public void RemoveToTile(RoomObjectGO roomObjectGO)
+        {
+            objectsOnTile.Remove(roomObjectGO);
+        }
     }
 }

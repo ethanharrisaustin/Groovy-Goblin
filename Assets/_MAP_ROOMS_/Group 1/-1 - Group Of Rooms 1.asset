@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: -1 - Group Of Rooms 1
   m_EditorClassIdentifier: Assembly-CSharp::MapRoomSystem.GroupOfRooms
   rooms:
+  - {fileID: 11400000, guid: c58ca1ce39b5f4bdba9acee71266fc92, type: 2}
   - {fileID: 11400000, guid: 29f7d6295630c429aab77a7d3baf0601, type: 2}
   - {fileID: 11400000, guid: 7170b4db3a9f74471a3c19a4f467099c, type: 2}
   - {fileID: 11400000, guid: 735547ee4969e40109099c10be77e7d3, type: 2}
