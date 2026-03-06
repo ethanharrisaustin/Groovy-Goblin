@@ -17,4 +17,14 @@ public class DontDestroy : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+
+    void OnDestroy()
+    {
+        objectNames.Remove(gameObject.name);
+    }
+
+    void OnApplicationQuit()
+    {
+        objectNames.Clear();
+    }
 }
