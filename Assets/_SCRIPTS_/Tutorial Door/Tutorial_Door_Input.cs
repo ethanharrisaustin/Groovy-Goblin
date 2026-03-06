@@ -14,6 +14,7 @@ public class Tutorial_Door_Input : MonoBehaviour
 
     [Header("Door Required Combo")]
     [SerializeField] private ElementInputs[] comboArray;
+    private int currentCounter;
     
     [Header("Transform Positions")]
     [SerializeField] private Transform rhythmBarTransform;
@@ -26,7 +27,7 @@ public class Tutorial_Door_Input : MonoBehaviour
     [Header("Input Bar Parameters")]
     [SerializeField] private float speed;
     [SerializeField] private int direction =1;
-    // [SerializeField] private bool atEndOfCombo;
+
 
     float actualMoveSpeed = 0;
 
@@ -43,7 +44,6 @@ public class Tutorial_Door_Input : MonoBehaviour
 
         actualMoveSpeed = 2f / MusicRhythmTimer.SecondsBetweenBars();
 
-        Debug.Log(MusicRhythmTimer.SecondsBetweenBeats());
     }
 
     // Update is called once per frame
@@ -52,21 +52,23 @@ public class Tutorial_Door_Input : MonoBehaviour
         if (isPlayerReady) {
             if (MusicRhythmTimer.BeatIncreased())
             {
-                Debug.Log(MusicRhythmTimer.BeatIncreased());
+                currentCounter += 1;
+                if (currentCounter > comboArray.Length - 1) { currentCounter = 0; }
                 isOnBeat = true;
             }
+            
         }
+
 
     }
 
     private void LateUpdate()
     {
-        MusicRhythmTimer.instance.Accuracy();
 
         if (isOnBeat) 
         {
             MoveComboInputBar();
-            checkInputValidPos();
+            checkBarValidPos();
         }
         
         currentPlayerInput = ElementInputs.None;
@@ -75,18 +77,22 @@ public class Tutorial_Door_Input : MonoBehaviour
     void Register_Player_Input_For_Combat_Air()
     {
         currentPlayerInput = ElementInputs.Air;
+        PlayerComboCheck();
     }
     void Register_Player_Input_For_Combat_Ground()
     {
         currentPlayerInput = ElementInputs.Ground;
+        PlayerComboCheck();
     }
     void Register_Player_Input_For_Combat_Fire()
     {
         currentPlayerInput = ElementInputs.Fire;
+        PlayerComboCheck();
     }
     void Register_Player_Input_For_Combat_Water()
     {
         currentPlayerInput = ElementInputs.Water;
+        PlayerComboCheck();
     }
     bool CheckPlayerIsReady()
     {
@@ -96,7 +102,21 @@ public class Tutorial_Door_Input : MonoBehaviour
 
    void PlayerComboCheck()
     {
-        MusicRhythmTimer.BeatIncreased();
+        if (MusicRhythmTimer.instance.Accuracy() > 0)
+        {
+            if (currentPlayerInput == comboArray[currentCounter])
+            {
+                print("Player inputted correct combo");
+            }
+            else
+            {
+                
+            }
+        }
+        else
+        {
+        
+        }
     }
 
     void MoveComboInputBar()
@@ -105,7 +125,7 @@ public class Tutorial_Door_Input : MonoBehaviour
             + Vector3.forward * actualMoveSpeed * direction * MusicRhythmTimer.MusicDelta();
     }
 
-    void checkInputValidPos()
+    void checkBarValidPos()
     {
         //float offset = 0;
         if (rhythmBarTransform.localPosition.z > rhythmBarMaxTransform.localPosition.z)
@@ -127,6 +147,7 @@ public class Tutorial_Door_Input : MonoBehaviour
             
         }
     }
+
     void invertDirection()
     {
         float distanceToMin = Mathf.Abs(rhythmBarTransform.localPosition.z - rhythmBarMinTransform.localPosition.z);

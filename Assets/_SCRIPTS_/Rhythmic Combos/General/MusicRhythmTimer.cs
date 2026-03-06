@@ -122,7 +122,7 @@ public class MusicRhythmTimer : MonoBehaviour
     /// <returns></returns>
     public float Accuracy()
     {
-        return  (Allowence() - DistanceFromBeat()) / Allowence();
+        return  (Allowence() - DistanceFromBeat()) / Allowence() *-1;
     }
 
     public float DistanceFromBeat()
@@ -190,6 +190,6 @@ public class MusicRhythmTimer : MonoBehaviour
     
     float Allowence()
     {
-        return basicMetronomeObject.SecondsBetweenBeats() / 3f;
+        return basicMetronomeObject.SecondsBetweenBeats() / 2f;
     }
 }
