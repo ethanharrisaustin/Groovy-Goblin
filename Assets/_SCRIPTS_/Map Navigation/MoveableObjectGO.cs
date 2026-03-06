@@ -33,12 +33,12 @@ namespace MapNavigation
             transform.position = new Vector3(floorTileGO.transform.position.x,  transform.position.y, floorTileGO.transform.position.z);
         }
         */
-        public void SetPositionTo(FloorTileGO floorTileGO)
+        public virtual void SetPositionTo(FloorTileGO floorTileGO)
         { 
             SetPositionTo(floorTileGO.GetPosition());
         }
 
-        public void SetPositionTo(Vector3 position)
+        public virtual void SetPositionTo(Vector3 position)
         {
             CharacterJumpSettings.GetSettings(out var jumpYCurve, out var jumpXZCurve, out var jumpTime, out var jumpHeight);
 
@@ -47,6 +47,7 @@ namespace MapNavigation
             transform.DOKill();
             transform.DOMoveX(position.x, jumpTime).SetEase(jumpXZCurve);
             transform.DOMoveZ(position.z, jumpTime).SetEase(jumpXZCurve);
+            transform.DORotateQuaternion(NewRotation(position), jumpTime).SetEase(jumpXZCurve);
             transform.DOMoveY(JumpPos(position, jumpHeight), jumpTime).SetEase(jumpYCurve).OnComplete(() => 
             {
                 objectIsMoving = false;
@@ -113,6 +114,11 @@ namespace MapNavigation
         float MaxY(Vector3 a, Vector3 b)
         {
             return Mathf.Max(a.y, b.y);
+        }
+
+        Quaternion NewRotation(Vector3 newPosition)
+        {
+            return Quaternion.LookRotation(transform.position - newPosition);
         }
     }
 }

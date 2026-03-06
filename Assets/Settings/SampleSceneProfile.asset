@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.044
+    m_Value: 0.85
 --- !u!114 &-7893295128165547882
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -37,10 +37,10 @@ MonoBehaviour:
     m_Value: 0.86
   intensity:
     m_OverrideState: 1
-    m_Value: 2.28
+    m_Value: 1.25
   scatter:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.569
   clamp:
     m_OverrideState: 0
     m_Value: 65472
@@ -58,11 +58,11 @@ MonoBehaviour:
     m_Value: 6
   dirtTexture:
     m_OverrideState: 0
-    m_Value: {fileID: 0}
+    m_Value: {fileID: 2800000, guid: b8efbb19a358742448f9145802245fe8, type: 3}
     dimension: 1
   dirtIntensity:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 6.26
 --- !u!114 &-3357603926938260329
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -84,7 +84,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.311
+    m_Value: 0.366
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
@@ -128,10 +128,10 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 0.9594605, y: 0.9677533, z: 1, w: 0}
+    m_Value: {x: 0.90829456, y: 0.9391001, z: 1, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.9617249, z: 0.96433115, w: 0}
+    m_Value: {x: 1, y: 0.9272591, z: 0.9298637, w: 0}
   gain:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0.10995725}
@@ -190,13 +190,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.8826944, z: 0.8535383, w: -0.22235239}
+    m_Value: {x: 0.9817404, y: 0.9959518, z: 1, w: -0.16160318}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.035022486}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.14298537}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 0.98211557, y: 0.9999999, z: 1, w: 0.25085515}
+    m_Value: {x: 0.98211557, y: 0.9999999, z: 1, w: -0.034259982}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0

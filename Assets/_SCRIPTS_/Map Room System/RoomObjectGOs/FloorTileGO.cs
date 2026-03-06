@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
 namespace MapRooms
 {
     public class FloorTileGO : TriggerTileGO
     {
-
         protected override string ObjectFlyInCategory()
         {
             return "FloorTileGO";
