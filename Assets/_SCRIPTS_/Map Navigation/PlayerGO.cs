@@ -9,8 +9,8 @@ namespace MapNavigation
         public static PlayerGO instance;
 
         [Space, Header("Player Movement Settings")]
-        public float moveToTileTime;
-        public float timeBetweenMovements = -1;
+        public double moveToTileTime;
+        public double timeBetweenMovements = -1;
 
         [HideInInspector] bool playerIsActive = true;
 
@@ -50,7 +50,7 @@ namespace MapNavigation
         }
 
         //Direction previousDirection;
-        float moveInputCooldown = 0f;
+        double moveInputCooldown = 0f;
         bool favourX = false;
         void MovementHandler()
         {

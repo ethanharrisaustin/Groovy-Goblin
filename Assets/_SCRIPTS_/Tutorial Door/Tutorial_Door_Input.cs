@@ -42,7 +42,7 @@ public class Tutorial_Door_Input : MonoBehaviour
         rhythmBarMaxTransform.GetComponent<MeshRenderer> ().enabled = false;
         rhythmBarMinTransform.GetComponent<MeshRenderer>().enabled = false;
 
-        actualMoveSpeed = 2f / MusicRhythmTimer.SecondsBetweenBars();
+        actualMoveSpeed = 2f / (float)MusicRhythmTimer.SecondsBetweenBars();
 
     }
 

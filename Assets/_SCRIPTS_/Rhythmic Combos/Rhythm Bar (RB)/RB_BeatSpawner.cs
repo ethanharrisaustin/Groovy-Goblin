@@ -34,7 +34,7 @@ public class RB_BeatSpawner : MonoBehaviour
 
         if (counter >= basicMetronomeObject.SecondsBetweenBeats())
         {            
-            float remainder = basicMetronomeObject.SecondsBetweenBeats() - counter;
+            float remainder = (float)basicMetronomeObject.SecondsBetweenBeats() - counter;
 
             RB_Beat beat = objectPool.SpawnObject().GetComponent<RB_Beat>();
 

@@ -53,7 +53,7 @@ public class MusicRhythmTimer : MonoBehaviour
 
         if (beatTimer >= basicMetronomeObject.SecondsBetweenBeats())
         {
-            float remainder = beatTimer - basicMetronomeObject.SecondsBetweenBeats();
+            double remainder = beatTimer - basicMetronomeObject.SecondsBetweenBeats();
 
             beat++;
 
@@ -63,10 +63,10 @@ public class MusicRhythmTimer : MonoBehaviour
             {
                 beat = 1;
                 bar++;
-                barTimer = remainder;
+                barTimer = (float)remainder;
             }
 
-            beatTimer = remainder;
+            beatTimer = (float)remainder;
         }
     }
 
@@ -144,12 +144,12 @@ public class MusicRhythmTimer : MonoBehaviour
         return instance.musicDelta;
     }
     
-    public static float SecondsBetweenBeats()
+    public static double SecondsBetweenBeats()
     {
         return instance.basicMetronomeObject.SecondsBetweenBeats();
     }
 
-    public static float SecondsBetweenBars()
+    public static double SecondsBetweenBars()
     {
         return instance.basicMetronomeObject.SecondsBetweenBeats() * instance.basicMetronomeObject.beatsInBar;
     }
@@ -180,7 +180,7 @@ public class MusicRhythmTimer : MonoBehaviour
 
     float NextBeat()
     {
-        return basicMetronomeObject.SecondsBetweenBeats() - beatTimer;
+        return (float)basicMetronomeObject.SecondsBetweenBeats() - beatTimer;
     }
 
     bool ClosestToBeatA(float a, float b)
@@ -190,6 +190,6 @@ public class MusicRhythmTimer : MonoBehaviour
     
     float Allowence()
     {
-        return basicMetronomeObject.SecondsBetweenBeats() / 2f;
+        return (float)basicMetronomeObject.SecondsBetweenBeats() / 2f;
     }
 }

@@ -22,7 +22,7 @@ public class EnemyMoveToPlayer : MonoBehaviour
         {
             Move();
 
-            timer -= MusicRhythmTimer.SecondsBetweenBeats();
+            timer -= (float)MusicRhythmTimer.SecondsBetweenBeats();
         }
     }
 

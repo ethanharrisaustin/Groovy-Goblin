@@ -10,12 +10,12 @@ public class BasicMetronomeObject : ScriptableObject
         return (int)(60f / (float)bpm * 1000f);
     }
 
-    public float SecondsBetweenBeats()
+    public double SecondsBetweenBeats()
     {
-        return 60f / bpm;
+        return 60d / (double)bpm;
     }
 
-    public float SecondsInABar()
+    public double SecondsInABar()
     {
         return SecondsBetweenBeats() * beatsInBar;
     }
