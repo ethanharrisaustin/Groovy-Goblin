@@ -149,6 +149,11 @@ public class MusicRhythmTimer : MonoBehaviour
         return instance.basicMetronomeObject.SecondsBetweenBeats();
     }
 
+    public static float SecondsBetweenBars()
+    {
+        return instance.basicMetronomeObject.SecondsBetweenBeats() * instance.basicMetronomeObject.beatsInBar;
+    }
+
     public static bool BeatIncreased()
     {
         return instance.increasedBeat;
