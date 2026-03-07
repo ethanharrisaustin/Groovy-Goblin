@@ -12,7 +12,7 @@ namespace MapRooms
             return "LightGO";
         }
         
-        int valuesPerLight = 11;
+        protected int valuesPerLight = 11;
         public override void GetValues(out string[] values)
         {
             Light[] lights = GetLights();
