@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 public class RB_Beat : MonoBehaviour
 {
     public Vector2 normalScale = new Vector2(1f, 0.5f);
@@ -7,6 +7,7 @@ public class RB_Beat : MonoBehaviour
 
     BasicMetronomeObject basicMetronomeObject;
     bool isNewBar = false;
+    [SerializeField] Image debugAccuracyDisplay;
 
     // Update is called once per frame
     void Update()
@@ -23,6 +24,7 @@ public class RB_Beat : MonoBehaviour
 
         transform.localPosition = Vector2.zero;
 
+        debugAccuracyDisplay.rectTransform.sizeDelta = new Vector2((RB_BeatSpawner.instance.CalculateDebugDistanceBetweenBeats() * MusicRhythmTimer.instance.Allowence() *  2), 100);
         SetScale();
     }
 

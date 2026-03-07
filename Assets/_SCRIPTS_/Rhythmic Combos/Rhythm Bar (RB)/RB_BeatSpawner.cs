@@ -33,7 +33,7 @@ public class RB_BeatSpawner : MonoBehaviour
         counter += MusicRhythmTimer.MusicDelta();
 
         if (counter >= basicMetronomeObject.SecondsBetweenBeats())
-        {            
+        {
             float remainder = (float)basicMetronomeObject.SecondsBetweenBeats() - counter;
 
             RB_Beat beat = objectPool.SpawnObject().GetComponent<RB_Beat>();
@@ -47,22 +47,46 @@ public class RB_BeatSpawner : MonoBehaviour
             currentBeat++;
         }
     }
+    public float CalculateDebugDistanceBetweenBeats()
+    {
+        float currentXPos;
+        float furtherestXPos=999999;
+        RB_Beat furtherestXPosBeat = null;
+        
+        objectPool.LoopThroughActiveObjects((RB_Beat beat) =>
+        {
+            currentXPos = beat.transform.localPosition.x;
+            if(currentXPos < furtherestXPos)
+            {
+                furtherestXPos = currentXPos;
+                furtherestXPosBeat = beat;
+            }
+        });
+
+        furtherestXPos = 999999;
+        RB_Beat secondfurthestXPosBeat = null;
+        objectPool.LoopThroughActiveObjects((RB_Beat beat) =>
+        {
+            if (beat != furtherestXPosBeat)
+            {
+                currentXPos = beat.transform.localPosition.x;
+                if (currentXPos < furtherestXPos)
+                {
+                    furtherestXPos = currentXPos;
+                    secondfurthestXPosBeat = beat;
+                }
+            }
+        });
+
+        if (furtherestXPosBeat == null || secondfurthestXPosBeat == null) return 0f;
+
+        return Mathf.Abs(furtherestXPosBeat.transform.localPosition.x - secondfurthestXPosBeat.transform.localPosition.x);
+
+    }
+
+
 
     float beatCounter = 0f;
-    void Spawner()
-    {
-        beatCounter += Time.deltaTime;
 
-        if (beatCounter >= basicMetronomeObject.SecondsBetweenBeats())
-        {            
-            SpawnBeat();
 
-            beatCounter = 0;
-        }
-    }
-
-    void SpawnBeat()
-    {
-        
-    }
 }

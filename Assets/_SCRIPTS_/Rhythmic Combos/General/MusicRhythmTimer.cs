@@ -21,6 +21,7 @@ public class MusicRhythmTimer : MonoBehaviour
     bool offBeatIncreased = false;
     bool offBeatWaiting = false;
 
+    [SerializeField] float rhythmAllowance = 4f;
     void Awake()
     {
         instance = this;
@@ -122,7 +123,7 @@ public class MusicRhythmTimer : MonoBehaviour
     /// <returns></returns>
     public float Accuracy()
     {
-        return  (Allowence() - DistanceFromBeat()) / Allowence() *-1;
+        return  ((Allowence() - DistanceFromBeat()) / Allowence()*-1);
     }
 
     public float DistanceFromBeat()
@@ -133,9 +134,10 @@ public class MusicRhythmTimer : MonoBehaviour
         // We are closer to previous beat 
         if (ClosestToBeatA(previousBeat, nextBeat))
         {
+            UnityEngine.Debug.Log("We are closest to the previous beat");
             return Mathf.Abs(previousBeat);
         }
-
+        UnityEngine.Debug.Log("We are closest to the next beat");
         return nextBeat;
     }
 
@@ -188,8 +190,8 @@ public class MusicRhythmTimer : MonoBehaviour
         return Mathf.Abs(a) > b;
     }
     
-    float Allowence()
+    public float Allowence()
     {
-        return (float)basicMetronomeObject.SecondsBetweenBeats() / 2f;
+        return (float)basicMetronomeObject.SecondsBetweenBeats() * rhythmAllowance;
     }
 }

@@ -6,7 +6,7 @@ public class Tutorial_Door_Input : MonoBehaviour
 {
     enum ElementInputs
     {
-        None,Ground,Water,Fire,Air
+        None, Ground, Water, Fire, Air
     }
     [SerializeField] private bool isPlayerReady = false;
     private bool isOnBeat = false;
@@ -15,13 +15,14 @@ public class Tutorial_Door_Input : MonoBehaviour
     [Header("Door Required Combo")]
     [SerializeField] private ElementInputs[] comboArray;
     private int currentCounter;
-
+    [SerializeField] private int scoreCounter;
 
     [Header("Icon Emissives")]
     [SerializeField] private MeshRenderer[] iconArray;
     private Material[] materialArray;
     [SerializeField] private float emmissiveTime;
     [SerializeField] private float emmissiveOnTime;
+
     [Header("Transform Positions")]
     [SerializeField] private Transform rhythmBarTransform;
     [SerializeField] private Transform rhythmBarMaxTransform;
@@ -32,7 +33,7 @@ public class Tutorial_Door_Input : MonoBehaviour
 
     [Header("Input Bar Parameters")]
     [SerializeField] private float speed;
-    [SerializeField] private int direction =1;
+    [SerializeField] private int direction = 1;
 
 
     float actualMoveSpeed = 0;
@@ -45,13 +46,13 @@ public class Tutorial_Door_Input : MonoBehaviour
         Input.onCombat3 += Register_Player_Input_For_Combat_Air;
         Input.onCombat4 += Register_Player_Input_For_Combat_Fire;
 
-        rhythmBarMaxTransform.GetComponent<MeshRenderer> ().enabled = false;
+        rhythmBarMaxTransform.GetComponent<MeshRenderer>().enabled = false;
         rhythmBarMinTransform.GetComponent<MeshRenderer>().enabled = false;
 
         actualMoveSpeed = 2f / (float)MusicRhythmTimer.SecondsBetweenBars();
 
         materialArray = new Material[iconArray.Length];
-        for(int i = 0; i < iconArray.Length; i++)
+        for (int i = 0; i < iconArray.Length; i++)
         {
             materialArray[i] = iconArray[i].material;
         }
@@ -61,14 +62,15 @@ public class Tutorial_Door_Input : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isPlayerReady) {
+        if (isPlayerReady)
+        {
             if (MusicRhythmTimer.BeatIncreased())
             {
                 currentCounter += 1;
-                if (currentCounter > comboArray.Length - 1) { currentCounter = 0; }
+                if (currentCounter > comboArray.Length - 1) { currentCounter = 0; Debug.Log("Combo Reset"); }
                 isOnBeat = true;
             }
-            
+
         }
 
 
@@ -77,12 +79,12 @@ public class Tutorial_Door_Input : MonoBehaviour
     private void LateUpdate()
     {
 
-        if (isOnBeat) 
+        if (isOnBeat)
         {
             MoveComboInputBar();
             checkBarValidPos();
         }
-        
+
         currentPlayerInput = ElementInputs.None;
     }
 
@@ -90,38 +92,25 @@ public class Tutorial_Door_Input : MonoBehaviour
     {
         currentPlayerInput = ElementInputs.Air;
         PlayerComboCheck();
-        materialArray[1].DOColor(Color.green *5, "_EmissionColor", emmissiveTime).OnComplete(() =>
-        {
-            materialArray[1].DOColor(new Color (54f,89f,44f) * 0.005f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
-        });
-        
+        makeIconGlow(ElementInputs.Air);
     }
     void Register_Player_Input_For_Combat_Ground()
     {
         currentPlayerInput = ElementInputs.Ground;
         PlayerComboCheck();
-        materialArray[2].DOColor(Color.brown * 10, "_EmissionColor", emmissiveTime).OnComplete(() =>
-        {
-            materialArray[2].DOColor(Color.white * 1f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
-        });
+        makeIconGlow(ElementInputs.Ground);
     }
     void Register_Player_Input_For_Combat_Fire()
     {
         currentPlayerInput = ElementInputs.Fire;
         PlayerComboCheck();
-        materialArray[0].DOColor(Color.red * 5, "_EmissionColor", emmissiveTime).OnComplete(() =>
-        {
-            materialArray[0].DOColor(new Color(119f, 119f, 44f) * 0.005f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
-        });
+        makeIconGlow(ElementInputs.Fire);
     }
     void Register_Player_Input_For_Combat_Water()
     {
         currentPlayerInput = ElementInputs.Water;
         PlayerComboCheck();
-        materialArray[3].DOColor(Color.lightBlue * 10, "_EmissionColor", emmissiveTime).OnComplete(() =>
-        {
-            materialArray[3].DOColor(Color.white * 1f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
-        });
+        makeIconGlow(ElementInputs.Water);
     }
     bool CheckPlayerIsReady()
     {
@@ -129,28 +118,33 @@ public class Tutorial_Door_Input : MonoBehaviour
         return playerStartTile.ContainsPlayer();
     }
 
-   void PlayerComboCheck()
+    void PlayerComboCheck()
     {
-        if (MusicRhythmTimer.instance.Accuracy() > 0)
-        {
-            if (currentPlayerInput == comboArray[currentCounter])
-            {
-                print("Player inputted correct combo");
-            }
-            else
-            {
-                
-            }
-        }
-        else
-        {
-        
-        }
+        if (MusicRhythmTimer.instance.Accuracy() > 0.5) { Debug.Log("Successful Combo"); }
+        else { Debug.Log("Failed Combo"); }
+        //Debug.Log(MusicRhythmTimer.instance.Accuracy());
+        //if (scoreCounter == 4) { print("Successful combo"); return; }
+        //if (MusicRhythmTimer.instance.Accuracy() >0.4)
+        //{
+        //    if (currentPlayerInput == comboArray[currentCounter])
+        //    {
+        //        print("Player inputted correct input: " + comboArray[currentCounter]);
+        //        scoreCounter++;
+        //    }
+        //    else
+        //    {
+        //        scoreCounter = 0;
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.Log("Innacurate Input");
+        //}
     }
 
     void MoveComboInputBar()
     {
-        rhythmBarTransform.localPosition = rhythmBarTransform.localPosition 
+        rhythmBarTransform.localPosition = rhythmBarTransform.localPosition
             + Vector3.forward * actualMoveSpeed * direction * MusicRhythmTimer.MusicDelta();
     }
 
@@ -168,12 +162,12 @@ public class Tutorial_Door_Input : MonoBehaviour
         }
         else if (rhythmBarTransform.localPosition.z < rhythmBarMinTransform.localPosition.z)
         {
-           float offset = Mathf.Abs(rhythmBarTransform.localPosition.z - rhythmBarMinTransform.localPosition.z);
+            float offset = Mathf.Abs(rhythmBarTransform.localPosition.z - rhythmBarMinTransform.localPosition.z);
 
             //atEndOfCombo = true;
-            rhythmBarTransform.localPosition = rhythmBarMinTransform.localPosition  + Vector3.forward * offset;
+            rhythmBarTransform.localPosition = rhythmBarMinTransform.localPosition + Vector3.forward * offset;
             invertDirection();
-            
+
         }
     }
 
@@ -182,13 +176,47 @@ public class Tutorial_Door_Input : MonoBehaviour
         float distanceToMin = Mathf.Abs(rhythmBarTransform.localPosition.z - rhythmBarMinTransform.localPosition.z);
         float distanceToMax = Mathf.Abs(rhythmBarTransform.localPosition.z - rhythmBarMaxTransform.localPosition.z);
 
-        if (distanceToMin > distanceToMax) 
+        if (distanceToMin > distanceToMax)
         {
             direction = -1;
         }
         else
         {
             direction = 1;
+        }
+    }
+    void makeIconGlow(ElementInputs element)
+    {
+        switch (element)
+        {
+            case ElementInputs.Air:
+                materialArray[1].DOKill(false);
+                materialArray[1].DOColor(Color.green * 5, "_EmissionColor", emmissiveTime).OnComplete(() =>
+                {
+                    materialArray[1].DOColor(new Color(54f, 89f, 44f) * 0.005f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+                });
+                break;
+            case ElementInputs.Fire:
+                materialArray[0].DOColor(Color.red * 5, "_EmissionColor", emmissiveTime).OnComplete(() =>
+                {
+                    materialArray[0].DOColor(new Color(119f, 119f, 44f) * 0.005f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+                });
+                break;
+            case ElementInputs.Water:
+                materialArray[3].DOKill(false);
+                materialArray[3].DOColor(Color.lightBlue * 10, "_EmissionColor", emmissiveTime).OnComplete(() =>
+                {
+                    materialArray[3].DOColor(Color.white * 1f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+                });
+                break;
+            case ElementInputs.Ground:
+                materialArray[2].DOKill(false);
+                materialArray[2].DOColor(Color.brown * 10, "_EmissionColor", emmissiveTime).OnComplete(() =>
+                {
+                    materialArray[2].DOColor(Color.white * 1f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+                });
+                break;
+
         }
     }
 }
