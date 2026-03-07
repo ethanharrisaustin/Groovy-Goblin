@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,13 @@ public class ObjectPool : MonoBehaviour
         return newObject;
     }
 
+    public T SpawnObject<T>() where T : Component
+    {
+        GameObject newGO = SpawnObject();
+
+        return newGO.GetComponent<T>();
+    }
+
     public void DestroyObject(GameObject obj)
     {
         obj.SetActive(false);
@@ -32,6 +40,21 @@ public class ObjectPool : MonoBehaviour
 
     public void DestroyAll()
     {
-        for (int i = 0; i < objectPool.Count; ++i) if (objectPool[i].activeSelf) objectPool[i].SetActive(false);
+        for (int i = 0; i < objectPool.Count; ++i) 
+        {
+            if (objectPool[i].activeSelf) objectPool[i].SetActive(false);
+        }
+    }
+
+    public void LoopThroughActiveObjects<T>(Action<T> action) where T : Component
+    {
+        for (int i = 0; i < objectPool.Count; ++i)
+        {
+            if (objectPool[i].activeSelf == false) continue;
+
+            var component = objectPool[i].GetComponent<T>();
+
+            action.Invoke(component);
+        }
     }
 }
