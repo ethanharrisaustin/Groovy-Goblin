@@ -15,7 +15,13 @@ public class Tutorial_Door_Input : MonoBehaviour
     [Header("Door Required Combo")]
     [SerializeField] private ElementInputs[] comboArray;
     private int currentCounter;
-    
+
+
+    [Header("Icon Emissives")]
+    [SerializeField] private MeshRenderer[] iconArray;
+    private Material[] materialArray;
+    [SerializeField] private float emmissiveTime;
+    [SerializeField] private float emmissiveOnTime;
     [Header("Transform Positions")]
     [SerializeField] private Transform rhythmBarTransform;
     [SerializeField] private Transform rhythmBarMaxTransform;
@@ -43,6 +49,12 @@ public class Tutorial_Door_Input : MonoBehaviour
         rhythmBarMinTransform.GetComponent<MeshRenderer>().enabled = false;
 
         actualMoveSpeed = 2f / (float)MusicRhythmTimer.SecondsBetweenBars();
+
+        materialArray = new Material[iconArray.Length];
+        for(int i = 0; i < iconArray.Length; i++)
+        {
+            materialArray[i] = iconArray[i].material;
+        }
 
     }
 
@@ -78,21 +90,38 @@ public class Tutorial_Door_Input : MonoBehaviour
     {
         currentPlayerInput = ElementInputs.Air;
         PlayerComboCheck();
+        materialArray[1].DOColor(Color.green *5, "_EmissionColor", emmissiveTime).OnComplete(() =>
+        {
+            materialArray[1].DOColor(new Color (54f,89f,44f) * 0.005f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+        });
+        
     }
     void Register_Player_Input_For_Combat_Ground()
     {
         currentPlayerInput = ElementInputs.Ground;
         PlayerComboCheck();
+        materialArray[2].DOColor(Color.brown * 10, "_EmissionColor", emmissiveTime).OnComplete(() =>
+        {
+            materialArray[2].DOColor(Color.white * 1f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+        });
     }
     void Register_Player_Input_For_Combat_Fire()
     {
         currentPlayerInput = ElementInputs.Fire;
         PlayerComboCheck();
+        materialArray[0].DOColor(Color.red * 5, "_EmissionColor", emmissiveTime).OnComplete(() =>
+        {
+            materialArray[0].DOColor(new Color(119f, 119f, 44f) * 0.005f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+        });
     }
     void Register_Player_Input_For_Combat_Water()
     {
         currentPlayerInput = ElementInputs.Water;
         PlayerComboCheck();
+        materialArray[3].DOColor(Color.lightBlue * 10, "_EmissionColor", emmissiveTime).OnComplete(() =>
+        {
+            materialArray[3].DOColor(Color.white * 1f, "_EmissionColor", emmissiveTime).SetDelay(emmissiveOnTime);
+        });
     }
     bool CheckPlayerIsReady()
     {
