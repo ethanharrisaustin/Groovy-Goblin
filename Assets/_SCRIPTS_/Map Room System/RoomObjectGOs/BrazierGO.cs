@@ -1,6 +1,5 @@
 using UnityEngine;
 using DG.Tweening;
-using Unity.Mathematics;
 
 namespace MapRooms
 {
@@ -58,9 +57,9 @@ namespace MapRooms
                 offset = _offset;
         }
 
-        public override void Spawn(RoomObject roomObject)
+        public override void Spawn(RoomObject roomObject, RoomObject.FlySettings flySettings)
         {
-            base.Spawn(roomObject);
+            base.Spawn(roomObject, flySettings);
 
             coalLightIntensity = coalLight.intensity;
             roomLightIntensity = roomLight.intensity;
@@ -74,19 +73,18 @@ namespace MapRooms
         {
             base.Update();
             
-            if (MusicRhythmTimer.BeatIncreased())
-            {
-                showIntensity = !showIntensity;
+            if (!MusicRhythmTimer.BeatIncreased()) return;
+            
+            showIntensity = !showIntensity;
 
-                coalLight.DOKill(false);
-                roomLight.DOKill(false);
+            coalLight.DOKill(false);
+            roomLight.DOKill(false);
 
-                float multiplier = showIntensity ? 1f : coalLightMinIntensity;
-                coalLight.DOIntensity(coalLightIntensity * multiplier, 0.2f);
+            float multiplier = showIntensity ? 1f : coalLightMinIntensity;
+            coalLight.DOIntensity(coalLightIntensity * multiplier, 0.2f);
 
-                multiplier = showIntensity ? 1f : roomLightMinIntensity;
-                roomLight.DOIntensity(roomLightIntensity * multiplier, 0.2f);
-            }
+            multiplier = showIntensity ? 1f : roomLightMinIntensity;
+            roomLight.DOIntensity(roomLightIntensity * multiplier, 0.2f);
         }
     }
 }

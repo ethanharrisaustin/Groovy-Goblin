@@ -28,25 +28,42 @@ namespace MapNavigation
             timeBetweenMovements = MusicRhythmTimer.SecondsBetweenBeats();
         }
 
+        bool wasPressed = false;
         protected override void Update()
         {
             base.Update();
 
             if (!playerIsActive) return;
 
-            GetInputs();
+            GetInputs(out bool holdingDown, out bool pressed);
 
-            if (MusicRhythmTimer.BeatIncreased() == false) return;
+            bool reallyIsPressed = holdingDown && !wasPressed;
 
-            MovementHandler();
+            //if (!pressed && MusicRhythmTimer.HalfBeatIncreased() == false) return;
+
+            if (objectIsMoving) return;
+
+            if (reallyIsPressed) MovementHandler();
+
+            wasPressed = holdingDown;
         }
 
         Direction direction;
-        void GetInputs()
+        void GetInputs(out bool holdingDown, out bool pressed)
         {
-            if (MovementAsDirection(favourX) == Direction.none) return;
+            if (MovementAsDirection(favourX) == Direction.none) 
+            {
+                holdingDown = false;
+                pressed = false;
+                return;
+            }
+
+            bool directionWasNone = direction == Direction.none;
 
             direction = MovementAsDirection(favourX);
+
+            holdingDown = true;
+            pressed = directionWasNone;
         }
 
         //Direction previousDirection;

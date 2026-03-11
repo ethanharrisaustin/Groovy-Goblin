@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MapRooms;
 using UnityEngine;
 
 public class CameraTarget : MonoBehaviour

@@ -48,5 +48,40 @@ namespace MapRooms
 
             return a.prefab.name == prefab.name;
         }
+
+        public class FlySettings
+        {
+            public AnimationCurve curve;
+            public float fallTime;
+            public float startYPos;
+            public float initialDelay;
+            public float delayMultiplier;
+
+            public FlySettings(RoomObjectGO roomObjectGO, bool flyingIn)
+            {
+                if (flyingIn)
+                {
+                    RoomObjectFlyInSettings.GetRoomObjectFlyInSettings(
+                        roomObjectGO.ObjectFlyInCategory(),
+                        out curve,
+                        out fallTime,
+                        out startYPos,
+                        out initialDelay,
+                        out delayMultiplier
+                    );
+                }
+                else
+                {
+                    RoomObjectFlyInSettings.GetRoomObjectFlyOutSettings(
+                        roomObjectGO.ObjectFlyInCategory(),
+                        out curve,
+                        out fallTime,
+                        out startYPos,
+                        out initialDelay,
+                        out delayMultiplier
+                    );
+                }
+            }
+        }
     }
 }

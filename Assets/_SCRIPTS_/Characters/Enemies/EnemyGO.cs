@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DG.Tweening;
+using Combat;
 using MapNavigation;
 using UnityEngine;
 
@@ -7,19 +7,86 @@ namespace MapRooms
 {
     public class EnemyGO : ObjectWithHealthGO
     {
+        #region  Variables
+
+        public enum EnemyPhase {  walking, attacking, stunned };
+        public EnemyPhase currentPhase = EnemyPhase.walking;
+        [HideInInspector] public EnemyPhase previousPhase = EnemyPhase.stunned;
         public bool canMoveDiagonally = false;
         public float moveTime = 0.2f;
+        public int beatsBeforeAttack = 4;
+        public Element elementToAttackWith;
+
+        #endregion
+
+        #region Update
 
         protected override void Update()
         {
             base.Update();
 
-            if (!MusicRhythmTimer.OffBeatIncreased()) return;
+            if (currentPhase != previousPhase)
+            {
+                OnChangedPhase();
+                previousPhase = currentPhase;
+            }
+
+            switch (currentPhase)
+            {
+                case EnemyPhase.walking:
+                WalkingPhase();
+                break;
+
+                case EnemyPhase.attacking:
+                AttackingPhase();
+                break;
+
+                case EnemyPhase.stunned:
+                StunnedPhase();
+                break;
+            }
+        }
+
+        void OnChangedPhase()
+        {
+            switch (currentPhase)
+            {
+                case EnemyPhase.walking:
+                OnStartedWalkingPhase();
+                break;
+
+                case EnemyPhase.attacking:
+                OnStartedAttackingPhase();
+                break;
+
+                case EnemyPhase.stunned:
+                OnStartedStunnedPhase();
+                break;
+            }
+        }
+
+        #endregion
+
+        #region Walking Phase
+
+        protected virtual void OnStartedWalkingPhase()
+        {
+            
+        }
+
+        bool isMovingThisTime = false;
+        protected virtual void WalkingPhase()
+        {
+            if (!MusicRhythmTimer.BeatIncreased()) return;
+
+            isMovingThisTime = ! isMovingThisTime;
+
+            if (!isMovingThisTime) return;
 
             MoveTowardsPlayer();
         }
 
-        void MoveTowardsPlayer()
+        protected virtual void MoveTowardsPlayer()
         {
             GridPathfinding.allowDiagonalMovement = canMoveDiagonally;
             
@@ -32,7 +99,7 @@ namespace MapRooms
             MoveToPos(pathToPlayer[1]);
         }
 
-        void MoveToPos(Vector3 position)
+        protected void MoveToPos(Vector3 position)
         {
             Input.Direction directionToMove = DirectionFromAToB(transform.position, position);
 
@@ -64,9 +131,9 @@ namespace MapRooms
             SetPositionTo(floorTileGO);
         }
 
-        Vector3 ClosestPosFromPlayer()
+        protected Vector3 ClosestPosFromPlayer()
         {
-            Vector3[] adjacentTiles = AdjacentTiles();
+            Vector3[] adjacentTiles = PlayerAdjacentTiles();
 
             float shortestDistance = Mathf.Infinity;
             float currentDistance;
@@ -89,7 +156,7 @@ namespace MapRooms
             return chosenTile;
         }
 
-        Vector3[] AdjacentTiles()
+        Vector3[] PlayerAdjacentTiles()
         {
             if (canMoveDiagonally)
             {
@@ -100,5 +167,48 @@ namespace MapRooms
                 return PlayerGO.instance.GetAdjacentCardinalTiles();
             }
         }
+
+        #endregion
+
+        #region  Attacking Phase
+
+        protected virtual void OnStartedAttackingPhase()
+        {
+            EnemyAttackRing ring = EnemyAttackRings.GetEnemyAttackRing(this);
+
+            ring.SetElement(this, elementToAttackWith);
+            ring.SetMaxBeat(beatsBeforeAttack);
+        }
+
+        protected virtual void AttackingPhase()
+        {
+            if (!MusicRhythmTimer.BeatIncreased()) return;
+
+            EnemyAttackRing ring = EnemyAttackRings.GetEnemyAttackRing(this);
+
+            bool attackPlayer = ring.IncreaseBeat();
+
+            if (attackPlayer)
+            {
+                Debug.Log("Attacking player");
+                ring.SetMaxBeat(beatsBeforeAttack); // Resetting it back to 0
+            }
+        }
+
+        #endregion
+
+        #region Stunned Phase
+
+        protected virtual void OnStartedStunnedPhase()
+        {
+            
+        }
+
+        protected virtual void StunnedPhase()
+        {
+            
+        }
+
+        #endregion
     }
 }

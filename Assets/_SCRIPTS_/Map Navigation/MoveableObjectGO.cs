@@ -2,6 +2,7 @@ using DG.Tweening;
 using MapRooms;
 using UnityEngine;
 using static Input;
+using static DoTweenExtensions;
 
 namespace MapNavigation
 {
@@ -13,7 +14,7 @@ namespace MapNavigation
         public Collider gridTriggerCenter;
         [SerializeField] LayerMask layerMask;
 
-        bool objectIsMoving = false;
+        protected bool objectIsMoving { get; private set;}
 
         protected override void LateUpdate()
         {
@@ -40,19 +41,71 @@ namespace MapNavigation
 
         public virtual void SetPositionTo(Vector3 position)
         {
-            CharacterJumpSettings.GetSettings(out var jumpYCurve, out var jumpXZCurve, out var jumpTime, out var jumpHeight);
+            //position += Vector3.up * 2;
+
+            CharacterJumpSettings.GetSettings(
+                out var jumpYCurve, 
+                out var jumpXZCurve, 
+                out var rotationCurve, 
+                out var jumpTime, 
+                out var jumpHeight,
+                out var rotationAmount);
 
             objectIsMoving = true;
 
             transform.DOKill();
             transform.DOMoveX(position.x, jumpTime).SetEase(jumpXZCurve);
             transform.DOMoveZ(position.z, jumpTime).SetEase(jumpXZCurve);
-            transform.DORotateQuaternion(NewRotation(position), jumpTime).SetEase(jumpXZCurve);
+
+            Quaternion newRotation = NewRotation(position);
+            Vector3 moveDirection = MoveDirection(position);
+
+            RotationAnimation(position, jumpTime, rotationCurve, rotationAmount);
+
+            /* 
+            DORotateAround(transform, Vector3.zero, moveDirection, rotationAmount, jumpTime, rotationCurve, 0f, () =>
+            {
+                transform.rotation = Quaternion.identity;
+            });*/
+
+            //transform.DOBlendableRotateBy(new Vector3(rotationAmount, 0f, 0f), jumpTime, RotateMode.FastBeyond360).SetEase(rotationCurve);
+            //transform.DOBlendableRotateBy(newRotation.eulerAngles, jumpTime, RotateMode.FastBeyond360).SetEase(Ease.Linear);
+            //transform.DORotateQuaternion(newRotation, jumpTime).SetEase(jumpXZCurve);
             transform.DOMoveY(JumpPos(position, jumpHeight), jumpTime).SetEase(jumpYCurve).OnComplete(() => 
             {
                 objectIsMoving = false;
                 transform.position = position;
             });
+        }
+
+        void RotationAnimation(Vector3 position, float jumpTime, AnimationCurve rotationCurve, float rotationAmount)
+        {
+            Direction direction = DirectionFromAToB(transform.position, position);
+            Vector3 rotation = new Vector3();
+            switch(direction)
+            {
+                case Direction.north:
+                rotation = new Vector3(-rotationAmount, 0f, 0f);
+                break;
+
+                case Direction.south:
+                rotation = new Vector3(rotationAmount, 0f, 0f);
+                break;
+
+                case Direction.east:
+                rotation = new Vector3(0f, 0f, rotationAmount);
+                break;
+
+                case Direction.west:
+                rotation = new Vector3(0f, 0f, -rotationAmount);
+                break;
+            }
+
+            transform.DOBlendableRotateBy(
+                    rotation, 
+                    jumpTime, 
+                    RotateMode.FastBeyond360)
+                    .SetEase(rotationCurve);
         }
 
         public virtual bool CanMoveNorth(out FloorTileGO floorTileNorth) { return CanMove(gridTriggerN, out floorTileNorth); }
@@ -77,7 +130,12 @@ namespace MapNavigation
         
         public virtual FloorTileGO GetFloorTile(Transform gridTrigger)
         {
-            Collider[] colliders = Physics.OverlapBox(gridTrigger.position, Vector3.one * 0.08f, Quaternion.identity, layerMask, QueryTriggerInteraction.Collide);
+            Collider[] colliders = Physics.OverlapBox(
+                gridTrigger.position, 
+                Vector3.one * 0.08f, 
+                Quaternion.identity, 
+                layerMask, 
+                QueryTriggerInteraction.Collide);
 
             return FloorTileGO.GetFloorTileGO(colliders);
         }
@@ -119,6 +177,11 @@ namespace MapNavigation
         Quaternion NewRotation(Vector3 newPosition)
         {
             return Quaternion.LookRotation(transform.position - newPosition);
+        }
+
+        Vector3 MoveDirection(Vector3 newPosition)
+        {
+            return (newPosition - transform.position).normalized;
         }
     }
 }

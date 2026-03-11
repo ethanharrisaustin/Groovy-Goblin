@@ -7,7 +7,7 @@ namespace MapRooms
 {
     public class LightGO : RoomObjectGO
     {
-        protected override string ObjectFlyInCategory()
+        public override string ObjectFlyInCategory()
         {
             return "LightGO";
         }

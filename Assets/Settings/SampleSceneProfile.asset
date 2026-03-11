@@ -50,6 +50,9 @@ MonoBehaviour:
   highQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
+  filter:
+    m_OverrideState: 0
+    m_Value: 0
   downscale:
     m_OverrideState: 0
     m_Value: 0
@@ -224,13 +227,13 @@ MonoBehaviour:
   active: 1
   distance:
     m_OverrideState: 1
-    m_Value: 40
+    m_Value: 55
   baseHeight:
     m_OverrideState: 1
     m_Value: 0.46
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 112.9
+    m_Value: 6.5
   enableGround:
     m_OverrideState: 1
     m_Value: 1
@@ -266,10 +269,10 @@ MonoBehaviour:
     m_Value: 1
   maxSteps:
     m_OverrideState: 1
-    m_Value: 8
+    m_Value: 60
   blurIterations:
-    m_OverrideState: 1
-    m_Value: 3
+    m_OverrideState: 0
+    m_Value: 1
   enabled:
     m_OverrideState: 1
     m_Value: 1

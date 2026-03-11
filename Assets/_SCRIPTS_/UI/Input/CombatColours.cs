@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace Combat
 {
+    public enum Element { Earth, Water, Air, Fire }
+
     public class CombatColours : MonoBehaviour
     {
         #region Variables
@@ -14,7 +16,6 @@ namespace Combat
             public string name;
             public enum InputGroupName { ArrowKeys, Xbox, Playstation, NitendoSwitch, OtherController }
             public InputGroupName inputGroupName;
-            public enum Element { Earth, Water, Air, Fire }
             public Element[] elements; 
             public Sprite[] combatSprites;
             public Color[] combatColours;
@@ -83,12 +84,25 @@ namespace Combat
             inputIconColour = c_inputElements.changeColourOfSprites ? elementColour : Color.white;
         }
 
-        public static void GetElementFromInput(int combatInput, out InputsElements.Element element, out Sprite inputIconSprite, out Color elementColour, out Color inputIconColour)
+        public static void GetElementFromInput(int combatInput, out Element element, out Sprite inputIconSprite, out Color elementColour, out Color inputIconColour)
         {
             element = c_inputElements.elements[combatInput];
             inputIconSprite = c_inputElements.combatSprites[combatInput];
             elementColour = c_inputElements.combatColours[combatInput];
             inputIconColour = c_inputElements.changeColourOfSprites ? elementColour : Color.white;
+        }
+
+        public static Color GetElementColour(Element element)
+        {
+            for (int i = 0; i < c_inputElements.elements.Length; ++i)
+            {
+                if (c_inputElements.elements[i] == element)
+                {
+                    return c_inputElements.combatColours[i];
+                }
+            }
+
+            return Color.paleTurquoise;
         }
 
         #endregion

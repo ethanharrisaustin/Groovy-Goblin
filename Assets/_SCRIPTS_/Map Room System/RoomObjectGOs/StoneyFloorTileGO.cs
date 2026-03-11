@@ -9,9 +9,9 @@ namespace MapRooms
         [SerializeField] Material[] materials;
         [SerializeField] Mesh[] meshes;
 
-        public override void Spawn(RoomObject roomObject)
+        public override void Spawn(RoomObject roomObject, RoomObject.FlySettings flySettings)
         {
-            base.Spawn(roomObject);
+            base.Spawn(roomObject, flySettings);
 
             int xPos = (int)GetPosition().x;
             int yPos = (int)GetPosition().z;

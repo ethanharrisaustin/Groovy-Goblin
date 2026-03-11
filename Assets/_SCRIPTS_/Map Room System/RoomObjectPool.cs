@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using Unity.VisualScripting;
+#endif
 using UnityEditor;
 using UnityEngine;
 
@@ -12,22 +14,31 @@ namespace MapRooms
 
         public List<RoomObjectGO> pool = new List<RoomObjectGO>();
 
+        RoomObject.FlySettings flyInSettings, flyOutSettings;
+
+        bool hasSetFlySettings = false;
+
         public RoomObjectGO SpawnRoomObject(RoomObject roomObject)
         {
             if (!RoomObject.PrefabIsMatching(roomObject, prefab)) return null;
 
             RoomObjectGO newRoomObjectGO = GetRoomObjectGO();
 
-            if (roomObjectGO == null) roomObjectGO = newRoomObjectGO;
+            if (roomObjectGO == null) 
+            {
+                roomObjectGO = newRoomObjectGO;
+            }
+
+            SetUpFlySettings(newRoomObjectGO);
 
             newRoomObjectGO.transform.parent = transform;
 
-            newRoomObjectGO.Spawn(roomObject);
+            newRoomObjectGO.Spawn(roomObject, flyInSettings);
 
             return newRoomObjectGO;
         }
 
-        public void DestroyRoomObject(RoomObject roomObject)
+        public virtual void DestroyRoomObject(RoomObject roomObject)
         {
             if (!RoomObject.PrefabIsMatching(roomObject, prefab)) return;
 
@@ -39,7 +50,14 @@ namespace MapRooms
             }
         }
 
-        public void DestroyAllRoomObjects()
+        public virtual void DestroyRoomObject(RoomObjectGO roomObjectGO)
+        {
+            if (roomObjectGO == null) return;
+
+            roomObjectGO.gameObject.SetActive(false);
+        }
+
+        public virtual void DestroyAllRoomObjects()
         {
             if (pool == null) return;
 
@@ -57,7 +75,7 @@ namespace MapRooms
             }
         }
 
-        public void RemoveAllRoomObjects()
+        public virtual void RemoveAllRoomObjects()
         {
             if (pool == null) return;
 
@@ -69,7 +87,7 @@ namespace MapRooms
                     continue;
                 }
 
-                pool[i].Remove();
+                pool[i].Remove(flyOutSettings, DestroyRoomObject);
 
                 ++i;
             }
@@ -93,7 +111,7 @@ namespace MapRooms
             }
         }
 
-        RoomObjectGO GetRoomObjectGO()
+        protected virtual RoomObjectGO GetRoomObjectGO()
         {
             needsToRecalulateActives = true;
 
@@ -142,6 +160,8 @@ namespace MapRooms
 
             for (int i = 0; i < pool.Count; ++i)
             {
+                if (pool[i] == null) continue;
+
                 if (pool[i].FinishedFlyingIn() == false) return false;
             }
 
@@ -160,6 +180,8 @@ namespace MapRooms
 
             for (int i = 0; i < pool.Count; ++i)
             {
+                if (pool[i] == null) continue;
+
                 if (pool[i].FinishedFlyingOut() == false) return false;
             }
 
@@ -170,7 +192,14 @@ namespace MapRooms
         public int NumberActive()
         {
             int total = 0;
-            for (int i = 0; i < pool.Count; ++i) if (pool[i].gameObject.activeSelf) total++;
+            for (int i = 0; i < pool.Count; ++i) 
+            {
+                if (pool[i] != null && pool[i].gameObject.activeSelf)
+                {
+                    total++;
+                }
+            }
+           
             return total;
         }
 
@@ -186,6 +215,8 @@ namespace MapRooms
             int index = 0;
             for (int i = 0; i < pool.Count; ++i)
             {
+                if (pool[i] == null) continue;
+                
                 if (pool[i].gameObject.activeSelf == false) continue;
 
                 result[index] = pool[i] as T;
@@ -196,6 +227,16 @@ namespace MapRooms
             previousActives = result;
 
             return result;
+        }
+
+        void SetUpFlySettings(RoomObjectGO roomObjectGO)
+        {
+            if (hasSetFlySettings) return;
+
+            flyInSettings = new RoomObject.FlySettings(roomObjectGO, true);
+            flyOutSettings = new RoomObject.FlySettings(roomObjectGO, false);
+
+            hasSetFlySettings = true;
         }
 
         #region  Unity Editor

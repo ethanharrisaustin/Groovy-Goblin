@@ -264,7 +264,13 @@ namespace MapRooms
             GameObject newPoolParent = new GameObject(roomObject.prefab.name + " Pool");
             newPoolParent.transform.parent = transform;
 
-            RoomObjectPool newRoomObjectPool = newPoolParent.AddComponent<RoomObjectPool>();
+            bool isUnary = roomObject.prefab.GetComponent<UnaryObjectGO>() != null;
+            
+            RoomObjectPool newRoomObjectPool;
+
+            if (isUnary) newRoomObjectPool = newPoolParent.AddComponent<UnaryObjectsHolder>();
+            else         newRoomObjectPool = newPoolParent.AddComponent<RoomObjectPool>();
+
             roomObjectPools.Add(newRoomObjectPool);
 
             newRoomObjectPool.prefab = roomObject.prefab;

@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
+
 
 
 #if UNITY_EDITOR
@@ -47,7 +49,7 @@ namespace MapRooms
 
         [HideInInspector] public Vector3 targetPosition;
         bool flyingIn = false;
-        public virtual void Spawn(RoomObject roomObject)
+        public virtual void Spawn(RoomObject roomObject, RoomObject.FlySettings flySettings)
         {
             transform.DOKill(false);
 
@@ -55,20 +57,21 @@ namespace MapRooms
             transform.eulerAngles = roomObject.rotation;
 
             targetPosition = roomObject.position;
-            FlyObjectIn(targetPosition, ObjectFlyInCategory());
+            FlyObjectIn(targetPosition, flySettings);
 
             this.roomObject = roomObject;
 
             SetValues(roomObject.values);
         }
 
-        public virtual void Remove()
+        public virtual void Remove(RoomObject.FlySettings flySettings, Action<RoomObjectGO> destroy)
         {
             transform.DOKill(false);
             
-            FlyObjectOut(ObjectFlyInCategory());
+            FlyObjectOut(flySettings, destroy);
         }
 
+        /* 
         void FlyObjectIn(Vector3 targetPosition, string objectCategory)
         {
             AnimationCurve curve;
@@ -81,8 +84,25 @@ namespace MapRooms
 
             transform.DOMoveY(targetPosition.y, fallTime).SetEase(curve).SetDelay((transform.position.x + transform.position.z + 5) * delayMultiplier + initialDelay).OnComplete(() => flyingIn = false);
         }
+        */
+
+        void FlyObjectIn(Vector3 targetPosition, RoomObject.FlySettings flySettings)
+        {
+            flyingIn = true;
+
+            transform.position = targetPosition + Vector3.up * flySettings.startYPos;
+
+            float delay = (transform.position.x + transform.position.z + 5) * flySettings.delayMultiplier;
+            delay += flySettings.initialDelay;
+
+            transform.DOMoveY(targetPosition.y, flySettings.fallTime)
+                .SetEase(flySettings.curve)
+                .SetDelay(delay)
+                .OnComplete(() => flyingIn = false);
+        }
 
         bool flyingOut= false;
+        /* 
         void FlyObjectOut(string objectCategory)
         {
             AnimationCurve curve;
@@ -93,8 +113,22 @@ namespace MapRooms
 
             transform.DOMoveY(transform.position.y + startYPos, fallTime).SetEase(curve).SetDelay((transform.position.x + transform.position.z + 5) * delayMultiplier + initialDelay).OnComplete(() => { flyingOut = false; gameObject.SetActive(false);  });
         }
+        */
 
-        protected virtual string ObjectFlyInCategory()
+        void FlyObjectOut(RoomObject.FlySettings flySettings, Action<RoomObjectGO> destroy)
+        {
+            flyingOut = true;
+
+            float delay = (transform.position.x + transform.position.z + 5) * flySettings.delayMultiplier;
+            delay += flySettings.initialDelay;
+
+            transform.DOMoveY(transform.position.y + flySettings.startYPos, flySettings.fallTime)
+                .SetEase(flySettings.curve)
+                .SetDelay(delay)
+                .OnComplete(() => { flyingOut = false; destroy.Invoke(this); });
+        }
+
+        public virtual string ObjectFlyInCategory()
         {
             return "RoomObjectGO";
         }
@@ -230,6 +264,18 @@ namespace MapRooms
         public virtual void LoadRoomObject(RoomObjectSave roomObjectSave)
         {
             
+        }
+
+        public virtual bool DoPooling()
+        {
+            return true;
+        }
+
+        public static bool Matching(RoomObjectGO a, RoomObjectGO b)
+        {
+            if (a == null || b == null) return false;
+
+            return a.GetPosition() == b.GetPosition() && a.GetScale() == b.GetScale() && a.GetRotation() == b.GetRotation();
         }
     }
 }

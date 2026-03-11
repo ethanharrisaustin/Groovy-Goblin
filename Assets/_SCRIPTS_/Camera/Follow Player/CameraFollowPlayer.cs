@@ -11,13 +11,15 @@ namespace CameraMovement
         // Update is called once per frame
         void LateUpdate()
         {
-            Transform player = PlayerGO.instance.transform;
+            PlayerGO player = PlayerGO.instance;
 
-            playerXandZ.position = new Vector3(player.position.x, playerXandZ.position.y, player.position.z);
+            if (player == null) return;
+
+            playerXandZ.position = new Vector3(player.transform.position.x, playerXandZ.position.y, player.transform.position.z);
 
             cameraTargetPosition.position = playerXandZ.position + cameraOffset;
 
-            cameraTargetPosition.LookAt(player);
+            cameraTargetPosition.LookAt(player.transform.position);
         }
     }
 }

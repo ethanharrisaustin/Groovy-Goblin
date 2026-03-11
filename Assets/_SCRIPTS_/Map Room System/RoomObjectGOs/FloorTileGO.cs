@@ -4,7 +4,7 @@ namespace MapRooms
 {
     public class FloorTileGO : TriggerTileGO
     {
-        protected override string ObjectFlyInCategory()
+        public override string ObjectFlyInCategory()
         {
             return "FloorTileGO";
         }
