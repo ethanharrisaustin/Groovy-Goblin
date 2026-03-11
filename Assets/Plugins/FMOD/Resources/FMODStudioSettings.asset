@@ -453,10 +453,11 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: Assets/FMOD/Goblins and Groove 2/Goblins and Groove 2.fspro
-  sourceBankPath: Assets/FMOD/Goblins and Groove 2/Build
+  sourceProjectPath: Assets/Resources/FMOD/Goblins and Groove 2/Goblins and Groove
+    2.fspro
+  sourceBankPath: Assets/Resources/FMOD/Goblins and Groove 2/Build
   sourceBankPathUnformatted: 
-  BankRefreshCooldown: -1
+  BankRefreshCooldown: 1
   ShowBankRefreshWindow: 1
   AutomaticEventLoading: 1
   BankLoadType: 0
