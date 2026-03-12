@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 #if UNITY_EDITOR
 using Unity.VisualScripting;
-#endif
 using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace MapRooms
@@ -130,7 +131,7 @@ namespace MapRooms
                     return pool[i];
                 }
             }
-
+            /*() 
             #if UNITY_EDITOR
 
             if (GetRoomObjectGOFromChild(out var roomObjectGO))  return roomObjectGO;
@@ -138,10 +139,10 @@ namespace MapRooms
             RoomObjectGO newRoomObjectGO = PrefabUtility.InstantiatePrefab(prefab).GetComponentInChildren<RoomObjectGO>();
 
             #else
-
+    */
             RoomObjectGO newRoomObjectGO = Instantiate(prefab).GetComponentInChildren<RoomObjectGO>();
 
-            #endif
+            //#endif
 
             newRoomObjectGO.roomObjectPool = this;
             pool.Add(newRoomObjectGO);
@@ -216,7 +217,7 @@ namespace MapRooms
             for (int i = 0; i < pool.Count; ++i)
             {
                 if (pool[i] == null) continue;
-                
+
                 if (pool[i].gameObject.activeSelf == false) continue;
 
                 result[index] = pool[i] as T;

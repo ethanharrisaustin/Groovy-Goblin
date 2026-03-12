@@ -29,7 +29,10 @@ namespace MapRooms
         void Awake()
         {
             instance = this;
+        }
 
+        void Start()
+        {
             roomObjectPools.Clear();
 
             for (int i = 0; i < transform.childCount; ++i)
@@ -122,7 +125,7 @@ namespace MapRooms
             finishedFlyingIn = false;
             for (int i = 0; i < roomObjectPools.Count; ++i) roomObjectPools[i].OnStartSpawning();
         }
-        bool FinishedFlyingIn()
+        public bool FinishedFlyingIn()
         {
             if (finishedFlyingIn) return true;
 
@@ -133,6 +136,11 @@ namespace MapRooms
 
             finishedFlyingIn = true;
             return true;
+        }
+
+        public bool FinishedFlying()
+        {
+            return FinishedFlyingIn() && FinishedFlyingOut();
         }
 
         #endregion
@@ -172,7 +180,7 @@ namespace MapRooms
             finishedFlyingOut = false;
             for (int i = 0; i < roomObjectPools.Count; ++i) roomObjectPools[i].OnStartRemoving();
         }
-        bool FinishedFlyingOut()
+        public bool FinishedFlyingOut()
         {
             if (finishedFlyingOut) return true;
 

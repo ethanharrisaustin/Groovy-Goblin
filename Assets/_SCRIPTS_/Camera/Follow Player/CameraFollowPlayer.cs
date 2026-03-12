@@ -1,4 +1,5 @@
 using MapNavigation;
+using MapRooms;
 using UnityEngine;
 
 namespace CameraMovement
@@ -11,6 +12,8 @@ namespace CameraMovement
         // Update is called once per frame
         void LateUpdate()
         {
+            if (!MapRoomSystem.instance.FinishedFlying()) return;
+
             PlayerGO player = PlayerGO.instance;
 
             if (player == null) return;
