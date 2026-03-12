@@ -10,6 +10,11 @@ public class RB_Beat : MonoBehaviour
     [SerializeField] Image debugAccuracyDisplay;
 
     // Update is called once per frame
+
+    private void Start()
+    {
+        if (!RB_BeatSpawner.instance.debugBarEnabled) {debugAccuracyDisplay.enabled = false;}
+    }
     void Update()
     {
         SetScale();

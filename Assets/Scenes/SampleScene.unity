@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ad477158c30d541b401495840abfb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicChangeTrigger
-  currentRank: 4
+  currentRank: 0
 --- !u!1 &42732065
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +627,7 @@ MonoBehaviour:
   basicMetronomeObject: {fileID: 11400000, guid: a79a2b5089f554180ad725031b3928a7, type: 2}
   _pixelsPerSecond: 350
   music: {fileID: 0}
+  debugBarEnabled: 0
   counter: 0
 --- !u!114 &225556074
 MonoBehaviour:
@@ -1921,7 +1922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1479971127
 MonoBehaviour:
   m_ObjectHideFlags: 0

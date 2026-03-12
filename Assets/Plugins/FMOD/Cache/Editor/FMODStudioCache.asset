@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: Assets/Resources/FMOD/Goblins and Groove 2/Build/Desktop/DynamicMusic.bank
   Name: DynamicMusic
   StudioPath: bank:/DynamicMusic
-  lastModified: 639084390938471507
+  lastModified: 639089501353675369
   FileSizes:
   - Name: Desktop
-    Value: 305248
+    Value: 305280
   Exists: 1
 --- !u!114 &-7464413650974717591
 MonoBehaviour:
@@ -99,7 +99,7 @@ MonoBehaviour:
   Path: Assets/Resources/FMOD/Goblins and Groove 2/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639080713158229930
+  lastModified: 639089497872826085
   FileSizes:
   - Name: Desktop
     Value: 872
@@ -167,7 +167,7 @@ MonoBehaviour:
   Path: Assets/Resources/FMOD/Goblins and Groove 2/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639080713158227619
+  lastModified: 639089497872805939
   FileSizes:
   - Name: Desktop
     Value: 1074
@@ -244,7 +244,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -6199381458607194033}
   cacheVersion: 131858
-  cacheTime: 639084390938471507
+  cacheTime: 639089501353675369
   SerializableEventsDict:
   - key: event:/RankSystem
     index: 0

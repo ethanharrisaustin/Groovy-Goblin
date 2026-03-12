@@ -7,6 +7,7 @@ public class RB_BeatSpawner : MonoBehaviour
     public float _pixelsPerSecond = 200f;
 
     public AudioSource music;
+    [SerializeField]public bool debugBarEnabled = false;
 
     public float counter = 0f;
 
